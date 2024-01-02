@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarViewWeek
 import androidx.compose.material.icons.filled.FormatListBulleted
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.HomeMax
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ViewList
 import androidx.compose.material3.DrawerState
@@ -24,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.gogym.R
@@ -56,6 +59,10 @@ fun MainPageNavigationDrawer(
     // specify nav drawer clickable icons
     val items = listOf(
         Pair(
+            Icons.Default.Home,
+            stringResource(R.string.home)
+        ),
+        Pair(
             Icons.Default.ViewList,
             stringResource(R.string.ListOfSessions)
         ),
@@ -86,7 +93,8 @@ fun MainPageNavigationDrawer(
                     Text(
                         modifier = Modifier
                             .padding(top = 15.dp, bottom = 50.dp),
-                        text = stringResource(id = R.string.app_name)
+                        text = stringResource(id = R.string.app_name),
+                        fontSize = 35.sp
                     )
 
                     items.forEachIndexed { index, item ->
