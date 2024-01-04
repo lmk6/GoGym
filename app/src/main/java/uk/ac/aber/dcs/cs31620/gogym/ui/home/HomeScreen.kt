@@ -15,9 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import uk.ac.aber.dcs.cs31620.gogym.model.Day
-import uk.ac.aber.dcs.cs31620.gogym.model.Workout
-import uk.ac.aber.dcs.cs31620.gogym.model.WorkoutStatus
+import uk.ac.aber.dcs.cs31620.gogym.model.day.Day
+import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
+import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutStatus
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.WeekDayNavigationBar
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
@@ -61,19 +61,19 @@ fun HomeScreenContent(
 
 @Composable
 fun DayNavigation() {
-    val days = listOf(
-        Day(LocalDate.now().minusDays(1), Workout(), WorkoutStatus.COMPLETED),
-        Day(LocalDate.now(), Workout(), WorkoutStatus.TODAY),
-        Day(LocalDate.now().plusDays(1), Workout(), WorkoutStatus.IN_THE_FUTURE)
-    )
-    var day by remember { mutableStateOf(days[1]) }
-
-    WeekDayNavigationBar(
-        chosenDay = remember { mutableStateOf(day) },
-        daysList = days,
-        onDaySelected = { nDay -> day = nDay },
-        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
-
+//    val days = listOf(
+//        Day(LocalDate.now().minusDays(1), Workout(), WorkoutStatus.COMPLETED),
+//        Day(LocalDate.now(), Workout(), WorkoutStatus.TODAY),
+//        Day(LocalDate.now().plusDays(1), Workout(), WorkoutStatus.IN_THE_FUTURE)
+//    )
+//    var day by remember { mutableStateOf(days[1]) }
+//
+//    WeekDayNavigationBar(
+//        chosenDay = remember { mutableStateOf(day) },
+//        daysList = days,
+//        onDaySelected = { nDay -> day = nDay },
+//        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
+//
 
 }
 

@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -25,10 +24,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import uk.ac.aber.dcs.cs31620.gogym.model.Day
-import uk.ac.aber.dcs.cs31620.gogym.model.Workout
-import uk.ac.aber.dcs.cs31620.gogym.model.WorkoutStatus
+import uk.ac.aber.dcs.cs31620.gogym.model.day.Day
+import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
+import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutStatus
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 import java.time.LocalDate
 
@@ -93,16 +91,16 @@ fun DaySelectionItem(
 @Preview
 @Composable
 fun WeekDayNavigationPreview() {
-    val days = listOf(
-        Day(LocalDate.now().minusDays(1), Workout(), WorkoutStatus.COMPLETED),
-        Day(LocalDate.now(), Workout(), WorkoutStatus.TODAY),
-        Day(LocalDate.now().plusDays(1), Workout(), WorkoutStatus.IN_THE_FUTURE)
-    )
-    var day by remember { mutableStateOf(days[1]) }
-    GoGymTheme(dynamicColor = false) {
-        WeekDayNavigationBar(
-            chosenDay = remember { mutableStateOf(day) },
-            daysList = days,
-            onDaySelected = { nDay -> day = nDay})
-    }
+//    val days = listOf(
+//        Day(LocalDate.now().minusDays(1), Workout(), WorkoutStatus.COMPLETED),
+//        Day(LocalDate.now(), Workout(), WorkoutStatus.TODAY),
+//        Day(LocalDate.now().plusDays(1), Workout(), WorkoutStatus.IN_THE_FUTURE)
+//    )
+//    var day by remember { mutableStateOf(days[1]) }
+//    GoGymTheme(dynamicColor = false) {
+//        WeekDayNavigationBar(
+//            chosenDay = remember { mutableStateOf(day) },
+//            daysList = days,
+//            onDaySelected = { nDay -> day = nDay})
+//    }
 }
