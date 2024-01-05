@@ -9,6 +9,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import uk.ac.aber.dcs.cs31620.gogym.datasource.util.DurationConverter
 import uk.ac.aber.dcs.cs31620.gogym.datasource.util.ExercisesListConverter
 import uk.ac.aber.dcs.cs31620.gogym.datasource.util.LocalDateConverter
 import uk.ac.aber.dcs.cs31620.gogym.datasource.util.StatusConverter
@@ -24,7 +25,7 @@ import kotlin.time.Duration.Companion.minutes
 
 @Database(entities = [Day::class, Workout::class, Exercise::class], version = 1)
 @TypeConverters(StatusConverter::class, ExercisesListConverter::class, WorkoutConverter::class,
-    LocalDateConverter::class)
+    LocalDateConverter::class, DurationConverter::class)
 abstract class GoGymRoomDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao
     abstract fun workoutDao(): WorkoutDao
@@ -61,18 +62,23 @@ abstract class GoGymRoomDatabase : RoomDatabase() {
         }
 
         private fun populateDatabase(context: Context, instance: GoGymRoomDatabase) {
+
+            val imagePath = "file:///android_asset/images/"
+
             val regularPushUps = Exercise(
                 name = "Regular Push Ups",
                 numOfSets = 2,
                 duration = 6.minutes,
-                repsPerSet = 8
+                repsPerSet = 8,
+                imagePath = "${imagePath}push_ups_img.jpg"
             )
 
             val squats = Exercise(
                 name = "Squats",
                 numOfSets = 1,
                 duration = 1.minutes,
-                repsPerSet = 8
+                repsPerSet = 8,
+                imagePath = "${imagePath}squat.jpg"
             )
 
             val exerciseDao = instance.exerciseDao()

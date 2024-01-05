@@ -1,6 +1,5 @@
 package uk.ac.aber.dcs.cs31620.gogym.datasource.util
 
-import androidx.annotation.NonNull
 import androidx.room.TypeConverter
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi

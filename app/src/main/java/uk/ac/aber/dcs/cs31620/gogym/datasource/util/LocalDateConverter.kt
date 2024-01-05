@@ -3,10 +3,8 @@
 package uk.ac.aber.dcs.cs31620.gogym.datasource.util
 
 import androidx.room.TypeConverter
-import java.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.TimeZone
 
 object LocalDateConverter {
     private val formatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
