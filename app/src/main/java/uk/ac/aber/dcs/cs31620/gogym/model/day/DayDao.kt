@@ -1,11 +1,13 @@
 package uk.ac.aber.dcs.cs31620.gogym.model.day
 
 import androidx.lifecycle.LiveData
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 
+@Dao
 interface DayDao {
 
     @Insert

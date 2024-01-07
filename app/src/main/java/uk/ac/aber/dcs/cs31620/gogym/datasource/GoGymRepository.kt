@@ -17,4 +17,8 @@ class GoGymRepository(application: Application) {
     }
 
     fun getAllExercises() = exerciseDao.getAllExercises()
+
+    fun getAllWorkouts() = workoutDao.getAllWorkouts()
+
+    fun getDays() = dayDao.getAllDays()
 }

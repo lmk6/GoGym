@@ -13,14 +13,14 @@ object ExercisesListConverter {
     private val jsonAdapter: JsonAdapter<List<Exercise>> = moshi.adapter(listMyData)
     @TypeConverter
     @JvmStatic
-    fun exercisesToJsonString(exercises: List<Exercise>?): String? {
+    fun exercisesToJsonString(exercises: List<Exercise>): String {
         return jsonAdapter.toJson(exercises)
     }
 
     @TypeConverter
     @JvmStatic
-    fun jsonStringToExercises(jsonString: String?): List<Exercise>? {
-        return jsonString?.let { jsonAdapter.fromJson(jsonString) }
+    fun jsonStringToExercises(jsonString: String): List<Exercise> {
+        return jsonString.let { jsonAdapter.fromJson(jsonString)!! }
     }
 
 }

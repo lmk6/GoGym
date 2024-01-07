@@ -3,8 +3,7 @@ package uk.ac.aber.dcs.cs31620.gogym.model.exercise
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
+import java.time.Duration
 
 @Entity(tableName = "exercises")
 data class Exercise(
@@ -15,7 +14,7 @@ data class Exercise(
     var numOfSets: Int,
     @ColumnInfo(name = "reps_per_set")
     var repsPerSet: Int,
-    var duration: Duration = 0.seconds,
+    var duration: Duration = Duration.ofSeconds(0),
     @ColumnInfo(name = "weight_enabled")
     var weightEnabled: Boolean = false,
     @ColumnInfo(name = "weight_one")

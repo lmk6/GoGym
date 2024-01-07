@@ -1,8 +1,8 @@
 package uk.ac.aber.dcs.cs31620.gogym.ui.components
 
-import android.graphics.fonts.FontStyle
 import android.net.Uri
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,13 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import uk.ac.aber.dcs.cs31620.gogym.R
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
-import kotlin.time.Duration
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -47,6 +45,7 @@ fun WorkoutCard(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .clip(RoundedCornerShape(20.dp))
+                    .aspectRatio(1f)
                     .clickable { clickAction(workout) }
                     .constrainAs(imageRef) {
                         start.linkTo(parent.start)
@@ -65,7 +64,7 @@ fun WorkoutCard(
                         bottom.linkTo(parent.bottom)
                         end.linkTo(parent.end)
                     }
-                    .padding(5.dp)
+                    .padding(start = 10.dp)
             )
 
         }
@@ -92,7 +91,8 @@ fun DetailsSection(
                 }
         )
 
-        val exercisesText = "${workout.exercises.size} Exercises"
+        //val exercisesText = "${workout.exercises.size} Exercises"
+        val exercisesText = "0 Exercises"
 
         Text(
             text = exercisesText,

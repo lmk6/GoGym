@@ -1,18 +1,14 @@
 package uk.ac.aber.dcs.cs31620.gogym.datasource.util
 
 import androidx.room.TypeConverter
-import kotlin.time.Duration
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
+import java.time.Duration
 
 object DurationConverter {
     @TypeConverter
     @JvmStatic
-    fun durationToLong(duration: Duration): Long =
-        duration.toLong(DurationUnit.MILLISECONDS)
+    fun durationToLong(duration: Duration): Long = duration.toMillis()
 
     @TypeConverter
     @JvmStatic
-    fun longToDuration(millis: Long): Duration =
-        millis.toDuration(DurationUnit.MILLISECONDS)
+    fun longToDuration(millis: Long): Duration = Duration.ofMillis(millis)
 }

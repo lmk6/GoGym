@@ -21,6 +21,7 @@ import uk.ac.aber.dcs.cs31620.gogym.model.exercise.ExerciseDao
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutDao
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutStatus
+import java.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
 @Database(entities = [Day::class, Workout::class, Exercise::class], version = 1)
@@ -68,7 +69,7 @@ abstract class GoGymRoomDatabase : RoomDatabase() {
             val regularPushUps = Exercise(
                 name = "Regular Push Ups",
                 numOfSets = 2,
-                duration = 6.minutes,
+                duration = Duration.ofMinutes(6),
                 repsPerSet = 8,
                 imagePath = "${imagePath}push_ups_img.jpg"
             )
@@ -76,26 +77,28 @@ abstract class GoGymRoomDatabase : RoomDatabase() {
             val squats = Exercise(
                 name = "Squats",
                 numOfSets = 1,
-                duration = 1.minutes,
+                duration = Duration.ofMinutes(1),
                 repsPerSet = 8,
                 imagePath = "${imagePath}squat.jpg"
             )
 
             val exerciseDao = instance.exerciseDao()
-            exerciseDao.insertMultipleExercises(listOf(regularPushUps, squats))
+            exerciseDao.insertSingleExercise(regularPushUps)
+            exerciseDao.insertSingleExercise(squats)
 
             val exercises = listOf(regularPushUps, squats, regularPushUps, squats, regularPushUps)
 
             val workout = Workout(
                 name = "Push Ups",
-                exercises = exercises
+                imagePath = "${imagePath}push_ups_img.jpg"
+                //exercises = exercises
             )
 
             val workoutDao = instance.workoutDao()
             workoutDao.insertSingleWorkout(workout)
 
             val day = Day(
-                workoutSession = workout,
+                //workoutSession = workout,
                 workoutStatus = WorkoutStatus.TODAY
             )
 
