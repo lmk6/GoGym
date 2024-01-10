@@ -90,15 +90,15 @@ abstract class GoGymRoomDatabase : RoomDatabase() {
 
             val workout = Workout(
                 name = "Push Ups",
-                imagePath = "${imagePath}push_ups_img.jpg"
-                //exercises = exercises
+                imagePath = "${imagePath}push_ups_img.jpg",
+                exercises = exercises
             )
 
             val workoutDao = instance.workoutDao()
             workoutDao.insertSingleWorkout(workout)
 
             val day = Day(
-                //workoutSession = workout,
+                workoutSession = workout,
                 workoutStatus = WorkoutStatus.TODAY
             )
 
