@@ -4,16 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
+import java.time.LocalDate
 
 @Dao
 interface DayDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSingleDay(day: Day)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMultipleDays(dayList: List<Day>)
 
     @Update
@@ -27,4 +30,7 @@ interface DayDao {
 
     @Query("SELECT * FROM days")
     fun getAllDays(): LiveData<List<Day>>
+
+    @Query("SELECT workouts.* FROM workouts INNER JOIN days ON days.workout_id = workouts.id WHERE days.dayOfWeek = :today")
+    fun getWorkoutForToday(today: DayOfWeek): LiveData<Workout?>
 }

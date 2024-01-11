@@ -50,7 +50,7 @@ fun WeekDayNavigationBar(
         content = {
             items(daysList.size) { index ->
                 val day = daysList[index]
-                val isSelected = chosenDay.value.date == day.date
+                val isSelected = chosenDay.value.dayOfWeek == day.dayOfWeek
                 val fontSize = if (isSelected) 40.sp else 24.sp
 
                 DaySelectionItem(day, isSelected, fontSize) {
@@ -69,10 +69,10 @@ fun DaySelectionItem(
     onItemClick: () -> Unit
 ) {
     var textCol = MaterialTheme.colorScheme.onTertiaryContainer
-    if (day.workoutStatus == WorkoutStatus.COMPLETED)
-        textCol = Color(89, 210, 123)
-    else if (day.workoutStatus == WorkoutStatus.UNCOMPLETED)
-        textCol = MaterialTheme.colorScheme.error
+//    if (day.workoutStatus == WorkoutStatus.COMPLETED)
+//        textCol = Color(89, 210, 123)
+//    else if (day.workoutStatus == WorkoutStatus.UNCOMPLETED)
+//        textCol = MaterialTheme.colorScheme.error
 
     Box(
         modifier = Modifier
@@ -80,7 +80,7 @@ fun DaySelectionItem(
             .clickable { onItemClick() }
     ) {
         Text(
-            text = day.name,
+            text = day.dayOfWeek.toString(),
             color = textCol,
             fontSize = fontSize,
             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal

@@ -20,6 +20,7 @@ import uk.ac.aber.dcs.cs31620.gogym.model.day.DataViewModel
 import uk.ac.aber.dcs.cs31620.gogym.ui.home.HomeScreenTopLevel
 import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
+import uk.ac.aber.dcs.cs31620.gogym.ui.week_planner.WeekPlanner
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,5 +52,6 @@ fun BuildNavigationGraph(
         navController = navController,
         startDestination = startDestination) {
         composable(Screen.Home.route) { HomeScreenTopLevel(navController, dataViewModel)}
+        composable(Screen.WeekPlanner.route) { WeekPlanner(navController, dataViewModel)}
     }
 }

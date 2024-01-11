@@ -7,4 +7,10 @@
     <string name="ListOfSessions">List of Sessions</string>
     <string name="nav_drawer_menu">Navigation Drawer menu</string>
     <string name="workoutImage">Workout Image</string>
+    <string name="todayWorkout">Today\'s\nSession</string>
+    <string name="noSession">No Session Scheduled!</string>
+    <string name="start">START</string>
+    <string name="rest">REST</string>
+    <string name="dayTxt">DAY!</string>
+    <string name="dropDownArrow">Drop-down arrow</string>
 </resources>

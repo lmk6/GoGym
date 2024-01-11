@@ -10,23 +10,26 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.gogym.datasource.util.DurationConverter
-import uk.ac.aber.dcs.cs31620.gogym.datasource.util.ExercisesListConverter
+import uk.ac.aber.dcs.cs31620.gogym.datasource.util.ExercisesIDsListConverter
 import uk.ac.aber.dcs.cs31620.gogym.datasource.util.LocalDateConverter
 import uk.ac.aber.dcs.cs31620.gogym.datasource.util.StatusConverter
 import uk.ac.aber.dcs.cs31620.gogym.datasource.util.WorkoutConverter
 import uk.ac.aber.dcs.cs31620.gogym.model.day.Day
 import uk.ac.aber.dcs.cs31620.gogym.model.day.DayDao
+import uk.ac.aber.dcs.cs31620.gogym.model.day.DayOfWeek
 import uk.ac.aber.dcs.cs31620.gogym.model.exercise.Exercise
 import uk.ac.aber.dcs.cs31620.gogym.model.exercise.ExerciseDao
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutDao
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutStatus
 import java.time.Duration
-import kotlin.time.Duration.Companion.minutes
+import java.time.LocalDate
 
 @Database(entities = [Day::class, Workout::class, Exercise::class], version = 1)
-@TypeConverters(StatusConverter::class, ExercisesListConverter::class, WorkoutConverter::class,
-    LocalDateConverter::class, DurationConverter::class)
+@TypeConverters(
+    StatusConverter::class, ExercisesIDsListConverter::class, WorkoutConverter::class,
+    LocalDateConverter::class, DurationConverter::class
+)
 abstract class GoGymRoomDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao
     abstract fun workoutDao(): WorkoutDao
@@ -77,33 +80,66 @@ abstract class GoGymRoomDatabase : RoomDatabase() {
             val squats = Exercise(
                 name = "Squats",
                 numOfSets = 1,
-                duration = Duration.ofMinutes(1),
+                duration = Duration.ofMinutes(1).plusSeconds(30),
                 repsPerSet = 8,
                 imagePath = "${imagePath}squat.jpg"
             )
 
             val exerciseDao = instance.exerciseDao()
-            exerciseDao.insertSingleExercise(regularPushUps)
-            exerciseDao.insertSingleExercise(squats)
+            val ex1ID = exerciseDao.insertSingleExercise(regularPushUps)
+            val ex2ID = exerciseDao.insertSingleExercise(squats)
 
-            val exercises = listOf(regularPushUps, squats, regularPushUps, squats, regularPushUps)
+            val exercises = listOf(ex1ID, ex2ID, ex1ID, ex2ID, ex1ID)
+
+            val workoutDao = instance.workoutDao()
 
             val workout = Workout(
                 name = "Push Ups",
                 imagePath = "${imagePath}push_ups_img.jpg",
-                exercises = exercises
+                exercisesIDs = exercises,
+                totalDuration = regularPushUps.duration
+                    .plus(regularPushUps.duration)
+                    .plus(regularPushUps.duration)
+                    .plus(squats.duration).plus(squats.duration)
             )
 
-            val workoutDao = instance.workoutDao()
-            workoutDao.insertSingleWorkout(workout)
-
-            val day = Day(
-                workoutSession = workout,
-                workoutStatus = WorkoutStatus.TODAY
+            val workout1 = Workout(
+                name = "PushUps",
+                imagePath = "${imagePath}squat.jpg",
+                exercisesIDs = listOf(ex1ID, ex2ID),
+                totalDuration = regularPushUps.duration.plus(squats.duration)
             )
 
+            val workoutID = workoutDao.insertSingleWorkout(workout)
+            workoutDao.insertSingleWorkout(workout1)
+
+            val days = listOf(
+                Day(
+                    workoutID = workoutID,
+                    dayOfWeek = DayOfWeek.MONDAY
+                ),
+                Day(
+                    dayOfWeek = DayOfWeek.TUESDAY
+                ),
+                Day(
+                    dayOfWeek = DayOfWeek.WEDNESDAY
+                ),
+                Day(
+                    workoutID = workoutID,
+                    dayOfWeek = DayOfWeek.THURSDAY
+                ),
+                Day(
+                    dayOfWeek = DayOfWeek.FRIDAY
+                ),
+                Day(
+                    dayOfWeek = DayOfWeek.SATURDAY
+                ),
+                Day(
+                    dayOfWeek = DayOfWeek.SUNDAY
+                ),
+            )
             val dayDao = instance.dayDao()
-            dayDao.insertSingleDay(day)
+            dayDao.insertMultipleDays(days)
         }
     }
 }

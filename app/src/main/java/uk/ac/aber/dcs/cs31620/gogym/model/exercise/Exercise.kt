@@ -8,7 +8,7 @@ import java.time.Duration
 @Entity(tableName = "exercises")
 data class Exercise(
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    var id: Long = 0,
     var name: String,
     @ColumnInfo(name = "num_of_sets")
     var numOfSets: Int,

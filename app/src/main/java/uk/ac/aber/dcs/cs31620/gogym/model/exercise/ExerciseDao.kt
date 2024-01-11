@@ -4,15 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 
 @Dao
 interface ExerciseDao {
-    @Insert
-    fun insertSingleExercise(exercise: Exercise)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertSingleExercise(exercise: Exercise): Long
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMultipleExercises(exerciseList: List<Exercise>)
 
     @Update
@@ -28,8 +29,11 @@ interface ExerciseDao {
     fun getAllExercises(): LiveData<List<Exercise>>
 
     @Query("""SELECT * FROM exercises WHERE id = :id LIMIT 1""")
-    fun getExerciseWithID(id: Int): LiveData<Exercise>
+    fun getExerciseWithID(id: Long): LiveData<Exercise>
 
     @Query("""SELECT * FROM exercises WHERE id IN (:ids)""")
-    fun getExercisesWithIDs(ids: List<Int>): LiveData<List<Exercise>>
+    fun getExercisesWithIDs(ids: List<Long>): LiveData<List<Exercise>>
+
+    @Query("""SELECT * FROM exercises WHERE name = :name LIMIT 1""")
+    fun getExerciseWithName(name: String): LiveData<Exercise>
 }

@@ -43,7 +43,8 @@ private val DarkColorScheme = darkColorScheme(
     scrim = scrimDark,
     inverseSurface = inverseSurfaceDark,
     inverseOnSurface = inverseOnSurfaceDark,
-    inversePrimary = inversePrimaryDark
+    inversePrimary = inversePrimaryDark,
+
 )
 
 
