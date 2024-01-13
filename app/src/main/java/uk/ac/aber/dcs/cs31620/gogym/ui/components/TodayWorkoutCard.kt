@@ -151,7 +151,7 @@ fun TextBox(
             Text(
                 text = startString,
                 fontSize = 40.sp,
-                color = Color.Black,
+                color = Color.White,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
@@ -164,7 +164,7 @@ fun TextBox(
             Text(
                 text = followupString,
                 fontSize = 18.sp,
-                color = Color.Black,
+                color = Color.White,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier

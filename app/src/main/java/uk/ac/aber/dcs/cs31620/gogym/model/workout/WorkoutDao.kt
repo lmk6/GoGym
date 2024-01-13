@@ -38,6 +38,9 @@ interface WorkoutDao {
     fun getLastInsertedID(): Long
 
     @Query("SELECT * FROM workouts WHERE id = :workoutID")
-    fun getWorkoutByID(workoutID: Long): Workout
+    fun getWorkoutByID(workoutID: Long): LiveData<Workout>
+
+    @Query("SELECT * FROM workouts WHERE id = :workoutID")
+    fun getNonLiveWorkoutByID(workoutID: Long): Workout
 
 }

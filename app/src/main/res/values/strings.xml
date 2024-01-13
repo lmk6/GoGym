@@ -13,4 +13,15 @@
     <string name="rest">REST</string>
     <string name="dayTxt">DAY!</string>
     <string name="dropDownArrow">Drop-down arrow</string>
+    <string name="editWorkout">Change Workout</string>
+    <string name="changeIcon">Change Icon</string>
+    <string name="viewWorkout">View Workout</string>
+    <string name="viewIcon">View Icon</string>
+    <string name="createNew">Create New</string>
+    <string name="editExercise">Edit the Exercise</string>
+    <string name="removeFromList">Remove from the list</string>
+    <string name="Delete">Delete the Exercise</string>
+    <string name="exerciseDeleted">Exercise Successfully Deleted</string>
+    <string name="cannotDelete">There must be at least one Exercise!</string>
+    <string name="exerciseRemoved">Excercise removed</string>
 </resources>

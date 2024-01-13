@@ -27,4 +27,24 @@ data class Exercise(
     var dropSetsFeature: Boolean = false,
     @ColumnInfo(name = "image_path")
     var imagePath: String = ""
-)
+) {
+    fun getFormattedDuration(): String {
+        val hours = duration.toHours()
+        val minutes = (duration.toMinutes() % 60)
+        val seconds = (duration.seconds % 60)
+
+        val formattedParts = mutableListOf<String>()
+
+        if (hours > 0) {
+            formattedParts.add(String.format("%dh", hours))
+        }
+        if (minutes > 0) {
+            formattedParts.add(String.format("%dmin", minutes))
+        }
+        if (seconds > 0 || formattedParts.isEmpty()) {
+            formattedParts.add(String.format("%ds", seconds))
+        }
+
+        return formattedParts.joinToString(" ")
+    }
+}

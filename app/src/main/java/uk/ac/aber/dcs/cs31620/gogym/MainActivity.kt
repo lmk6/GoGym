@@ -17,10 +17,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.gogym.model.day.DataViewModel
+import uk.ac.aber.dcs.cs31620.gogym.ui.exercises.ExercisesScreen
 import uk.ac.aber.dcs.cs31620.gogym.ui.home.HomeScreenTopLevel
 import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
-import uk.ac.aber.dcs.cs31620.gogym.ui.week_planner.WeekPlanner
+import uk.ac.aber.dcs.cs31620.gogym.ui.week_planner.WeekPlannerScreen
+import uk.ac.aber.dcs.cs31620.gogym.ui.workouts.WorkoutViewScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,14 +46,23 @@ fun BuildNavigationGraph(
     dataViewModel: DataViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ) {
-    var startDestination = remember { Screen.Home.route }
+    val startDestination = remember { Screen.Home.route }
 
     val context = LocalContext.current as Activity
 
     NavHost(
         navController = navController,
-        startDestination = startDestination) {
-        composable(Screen.Home.route) { HomeScreenTopLevel(navController, dataViewModel)}
-        composable(Screen.WeekPlanner.route) { WeekPlanner(navController, dataViewModel)}
+        startDestination = startDestination
+    ) {
+        composable(Screen.Home.route) { HomeScreenTopLevel(navController, dataViewModel) }
+        composable(Screen.WeekPlanner.route) { WeekPlannerScreen(navController, dataViewModel) }
+        composable(Screen.Exercises.route) { ExercisesScreen(navController, dataViewModel) }
+        composable("${Screen.WorkoutView.route}/{workoutID}") { backStackEntry ->
+            WorkoutViewScreen(
+                navController,
+                dataViewModel,
+                backStackEntry.arguments?.getString("workoutID")
+            )
+        }
     }
 }

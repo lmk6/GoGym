@@ -13,7 +13,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -45,6 +51,7 @@ import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.TodayWorkoutCard
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.WorkoutCard
+import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 
 @Composable
@@ -66,13 +73,23 @@ fun HomeScreenTopLevel(
 fun HomeScreen(
     navController: NavHostController,
     workoutsList: List<Workout> = listOf(),
-    todayWorkout: Workout?
+    todayWorkout: Workout?,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
     TopLevelScaffold(
         navController = navController,
-        coroutineScope = coroutineScope
+        coroutineScope = coroutineScope,
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { /*TODO*/ }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(id = R.string.createNew)
+                )
+            }
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -102,6 +119,14 @@ fun HomeScreen(
                 items(workoutsList) {
                     WorkoutCard(
                         workout = it,
+                        clickAction = {
+                            navController.navigate("${Screen.WorkoutView.route}/${it.id}") {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                            }
+                        },
                         modifier = Modifier
                             .padding(top = 10.dp)
                     )

@@ -24,7 +24,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import uk.ac.aber.dcs.cs31620.gogym.R
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
-import uk.ac.aber.dcs.cs31620.gogym.ui.components.previewUtils.dummyWorkout
+import uk.ac.aber.dcs.cs31620.gogym.ui.components.utils.dummyWorkout
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -32,15 +32,15 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 fun WorkoutCard(
     modifier: Modifier = Modifier,
     workout: Workout,
-    clickAction: (Workout) -> Unit = {},
-    deleteAction: (Workout) -> Unit = {}
+    clickAction: () -> Unit = {},
+    deleteAction: () -> Unit = {}
 ) {
     ElevatedCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
             .height(80.dp)
-            .clickable { clickAction(workout) },
+            .clickable { clickAction() },
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
     ) {
         ConstraintLayout {

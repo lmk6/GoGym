@@ -23,12 +23,13 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainPageTopAppBar(
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    title: String? = null
 ) {
     CenterAlignedTopAppBar(
         title = {
             Text(
-                stringResource(id = R.string.app_name),
+                title ?: stringResource(id = R.string.app_name),
                 fontWeight = FontWeight.Bold
             )
         },

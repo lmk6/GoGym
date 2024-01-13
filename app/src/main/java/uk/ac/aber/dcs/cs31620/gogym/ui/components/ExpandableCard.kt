@@ -6,11 +6,13 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,6 +21,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
+import androidx.compose.material.icons.rounded.ChangeCircle
+import androidx.compose.material.icons.rounded.RemoveRedEye
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -46,23 +51,27 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import uk.ac.aber.dcs.cs31620.gogym.R
-import uk.ac.aber.dcs.cs31620.gogym.model.day.Day
-import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
-import uk.ac.aber.dcs.cs31620.gogym.ui.components.previewUtils.dummyDay
-import uk.ac.aber.dcs.cs31620.gogym.ui.components.previewUtils.dummyWorkout
+import uk.ac.aber.dcs.cs31620.gogym.ui.components.utils.dummyDay
+import uk.ac.aber.dcs.cs31620.gogym.ui.components.utils.dummyWorkout
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
 @Composable
-fun ExpandableDayCard(
+fun ExpandableCard(
     modifier: Modifier,
-    day: Day,
-    workout: Workout? = null,
-    onChangeWorkout: (Day) -> Unit = {},
-    onViewWorkoutSession: (Workout) -> Unit = {},
+    imagePath: String,
+    topText: String,
+    bottomText: String,
+    extraText: String? = null,
+    topButtonText: String,
+    bottomButtonText: String,
+    topButtonImageVector: ImageVector,
+    bottomButtonImageVector: ImageVector,
+    onClickTopButton: () -> Unit = {},
+    onClickBottomButton: () -> Unit = {},
 ) {
-    var expandedState by remember { mutableStateOf(true) }
+    var expandedState by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (expandedState) 90f else 0f, label = ""
     )
@@ -98,11 +107,6 @@ fun ExpandableDayCard(
             ) {
                 val (imageRef, detailsRef, iconRef) = createRefs()
 
-                val imagePath =
-                    workout?.imagePath
-                        ?: "file:///android_asset/images/eirik_uhlen_rest_day.jpg"
-                val workoutName = workout?.name ?: stringResource(id = R.string.noSession)
-
                 GlideImage(
                     model = Uri.parse(imagePath),
                     contentDescription = stringResource(id = R.string.workoutImage),
@@ -118,13 +122,10 @@ fun ExpandableDayCard(
                         }
                 )
 
-                DayDetails(
-                    dayName = day.dayOfWeek.toString().lowercase()
-                        .replaceFirstChar {
-                            if (it.isLowerCase()) it.titlecase(Locale.getDefault())
-                            else it.toString()
-                        },
-                    workoutName = workoutName,
+                Details(
+                    topText = topText,
+                    bottomText = bottomText,
+                    extraText = extraText,
                     modifier = Modifier
                         .constrainAs(detailsRef) {
                             start.linkTo(imageRef.end)
@@ -133,7 +134,7 @@ fun ExpandableDayCard(
                         }
                         .padding(start = 10.dp),
                     textColour =
-                        if (expandedState) MaterialTheme.colorScheme.onPrimary
+                    if (expandedState) MaterialTheme.colorScheme.onPrimary
                     else Color.Unspecified
                 )
 
@@ -154,8 +155,8 @@ fun ExpandableDayCard(
                         imageVector = Icons.Filled.ArrowForwardIos,
                         contentDescription = stringResource(id = R.string.dropDownArrow),
                         tint =
-                            if (expandedState) MaterialTheme.colorScheme.onPrimary
-                            else MaterialTheme.colorScheme.primary,
+                        if (expandedState) MaterialTheme.colorScheme.onPrimary
+                        else MaterialTheme.colorScheme.primary,
                         modifier = Modifier
                             .size(80.dp)
                     )
@@ -163,63 +164,139 @@ fun ExpandableDayCard(
             }
 
             if (expandedState) {
-                Column {
-                    Text(text = "HELLO")
-                }
+                ActionButton(
+                    actionDescription = topButtonText,
+                    iconImage = topButtonImageVector,
+                    iconDescription = topButtonText,
+                    onClick = onClickTopButton
+                )
+
+                ActionButton(
+                    actionDescription = bottomButtonText,
+                    iconImage = bottomButtonImageVector,
+                    iconDescription =  bottomButtonText,
+                    onClick = onClickBottomButton
+                )
             }
         }
     }
 }
 
 @Composable
-private fun ExpandedRow() {
-
+private fun ActionButton(
+    actionDescription: String,
+    iconImage: ImageVector,
+    iconDescription: String,
+    onClick: () -> Unit
+) {
+    Box (
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .background(
+                color = Color.Transparent
+            )
+    ) {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier
+                .padding(10.dp)
+                .padding(start = 15.dp)
+        ){
+            Icon(
+                imageVector = iconImage,
+                contentDescription = iconDescription,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(40.dp)
+            )
+            Spacer(modifier = Modifier.width(15.dp))
+            Text(
+                text = actionDescription,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+    }
 }
 
 @Composable
-private fun DayDetails(
-    dayName: String,
-    workoutName: String,
+private fun Details(
+    modifier: Modifier,
     textColour: Color,
-    modifier: Modifier
+    topText: String,
+    bottomText: String,
+    extraText: String? = null
 ) {
     ConstraintLayout(modifier = modifier) {
-        val (nameRef, numOfExRef) = createRefs()
+        val (topTextRef, bottomTextRef, extraTextRef) = createRefs()
 
         Text(
-            text = dayName,
+            text = topText,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             color = textColour,
             modifier = Modifier
-                .constrainAs(nameRef) {
+                .constrainAs(topTextRef) {
                     start.linkTo(parent.start)
                     top.linkTo(parent.top)
-                    bottom.linkTo(numOfExRef.top)
+                    bottom.linkTo(bottomTextRef.top)
                 }
         )
 
         Text(
-            text = workoutName,
+            text = bottomText,
             fontSize = 20.sp,
             fontWeight = FontWeight.ExtraLight,
             color = textColour,
             modifier = Modifier
-                .constrainAs(numOfExRef) {
+                .constrainAs(bottomTextRef) {
                     start.linkTo(parent.start)
-                    top.linkTo(nameRef.bottom)
+                    top.linkTo(topTextRef.bottom)
                     bottom.linkTo(parent.bottom)
                 }
-                .padding(end = 10.dp)
+                .padding(end = 15.dp)
         )
+
+        extraText?.let {
+            Text(
+                text = extraText,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.ExtraLight,
+                color = textColour,
+                modifier = Modifier
+                    .constrainAs(extraTextRef) {
+                        start.linkTo(bottomTextRef.end)
+                        top.linkTo(topTextRef.bottom)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .padding(end = 10.dp)
+            )
+        }
     }
 }
 
 @Composable
 @Preview
 fun ExpendableDayCardPreview() {
+    val topText = dummyDay.dayOfWeek.toString().lowercase()
+        .replaceFirstChar { itDay ->
+            if (itDay.isLowerCase()) itDay.titlecase(Locale.getDefault())
+            else itDay.toString()
+        }
+
     GoGymTheme {
-        ExpandableDayCard(modifier = Modifier, day = dummyDay, workout = dummyWorkout)
+        ExpandableCard(
+            modifier = Modifier,
+            topText = topText,
+            bottomText = dummyWorkout.name,
+            imagePath = dummyWorkout.imagePath,
+            topButtonImageVector = Icons.Rounded.ChangeCircle,
+            topButtonText = stringResource(id = R.string.editWorkout),
+            bottomButtonImageVector = Icons.Rounded.RemoveRedEye,
+            bottomButtonText = stringResource(id = R.string.viewWorkout)
+        )
     }
 }
 

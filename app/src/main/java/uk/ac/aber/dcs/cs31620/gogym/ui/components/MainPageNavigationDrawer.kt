@@ -27,9 +27,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.gogym.R
+import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 
 /**
@@ -79,11 +81,11 @@ fun MainPageNavigationDrawer(
             stringResource(R.string.settings)
         )
     )
+    val selectedItem = rememberSaveable { mutableIntStateOf(0) }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            val selectedItem = rememberSaveable { mutableIntStateOf(0) }
             ModalDrawerSheet {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -113,14 +115,22 @@ fun MainPageNavigationDrawer(
                                 selectedItem.intValue = index
 
                                 // Just close the drawer and navigate
-                                if (index == 0) {
-                                    // If we don't do this the drawer will be hidden
-                                    // when we navigate to the login screen, however,
-                                    // the back button etc will take us back to the
-                                    // open drawer, which is not usual behaviour
-                                    closeDrawer()
-                                }
                                 closeDrawer()
+                                val route =
+                                    when (index) {
+                                        0 -> Screen.Home.route
+                                        2 -> Screen.Exercises.route
+                                        3 -> Screen.WeekPlanner.route
+                                        else -> null
+                                    }
+                                route?.let {
+                                    navController.navigate(route = route) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                    }
+                                }
                             }
                         )
                     }

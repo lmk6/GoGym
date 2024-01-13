@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs31620.gogym.ui.components.previewUtils
+package uk.ac.aber.dcs.cs31620.gogym.ui.components.utils
 
 import uk.ac.aber.dcs.cs31620.gogym.model.day.Day
 import uk.ac.aber.dcs.cs31620.gogym.model.day.DayOfWeek

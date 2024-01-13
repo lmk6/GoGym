@@ -23,6 +23,7 @@ fun TopLevelScaffold(
     snackbarContent: @Composable (SnackbarData) -> Unit = {},
     coroutineScope: CoroutineScope,
     snackbarHostState: SnackbarHostState? = null,
+    title: String? = null,
     pageContent: @Composable (innerPadding: PaddingValues) -> Unit = {}
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -39,7 +40,8 @@ fun TopLevelScaffold(
     ) {
         Scaffold(
             topBar = {
-                MainPageTopAppBar(onClick = {
+                MainPageTopAppBar(
+                    onClick = {
                     coroutineScope.launch {
                         if (drawerState.isOpen) {
                             drawerState.close()
@@ -47,7 +49,9 @@ fun TopLevelScaffold(
                             drawerState.open()
                         }
                     }
-                })
+                },
+                    title = title
+                )
             },
             bottomBar = {
                 MainPageNavigationBar(navController)
