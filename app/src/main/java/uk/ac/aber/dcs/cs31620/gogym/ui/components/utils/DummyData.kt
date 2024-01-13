@@ -9,7 +9,7 @@ import java.time.Duration
 val dummyExercise = Exercise(
     name = "Regular Push Ups",
     numOfSets = 2,
-    duration = Duration.ofMinutes(6),
+    duration = Duration.ofMinutes(6).plusSeconds(30),
     repsPerSet = 8,
     imagePath = "file:///android_asset/images/push_ups_img.jpg"
 )

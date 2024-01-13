@@ -43,10 +43,28 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
         repository.deleteExercise(exercise)
     }
 
+    fun deleteWorkout(workout: Workout): Boolean {
+        val allDays = days.value
+
+        allDays?.let { daysList ->
+            val daysWithWorkout =
+                daysList.filter { it.workoutID != workout.id && it.workoutID != null }
+
+            if (daysWithWorkout.isNotEmpty()) {
+                repository.deleteWorkout(workout)
+                return true
+            }
+        }
+        return false
+    }
+
     fun updateWorkout(workout: Workout) = repository.updateWorkout(workout)
 
     fun getWorkoutByID(workoutID: Long): LiveData<Workout> =
         repository.getWorkout(workoutID)
+
+    fun getNonLiveWorkoutByID(workoutID: Long): Workout =
+        repository.getWorkoutNonLive(workoutID)
 
     private fun loadDays(): LiveData<List<Day>> {
         return repository.getDays()

@@ -24,7 +24,8 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 @Composable
 fun MainPageTopAppBar(
     onClick: () -> Unit = {},
-    title: String? = null
+    title: String? = null,
+    actions: @Composable () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -41,7 +42,8 @@ fun MainPageTopAppBar(
                     modifier = Modifier.size(128.dp)
                 )
             }
-        }
+        },
+        actions = { actions() }
     )
 }
 

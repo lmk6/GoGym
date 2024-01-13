@@ -119,6 +119,7 @@ fun MainPageNavigationDrawer(
                                 val route =
                                     when (index) {
                                         0 -> Screen.Home.route
+                                        1 -> Screen.Sessions.route
                                         2 -> Screen.Exercises.route
                                         3 -> Screen.WeekPlanner.route
                                         else -> null

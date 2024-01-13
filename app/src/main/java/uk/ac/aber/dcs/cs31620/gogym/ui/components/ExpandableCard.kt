@@ -51,6 +51,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import uk.ac.aber.dcs.cs31620.gogym.R
+import uk.ac.aber.dcs.cs31620.gogym.defaultRoundedCornerShape
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.utils.dummyDay
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.utils.dummyWorkout
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
@@ -79,7 +80,7 @@ fun ExpandableCard(
     ElevatedCard(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
+            .clip(defaultRoundedCornerShape)
             .animateContentSize(
                 animationSpec = tween(
                     durationMillis = 200,
@@ -112,7 +113,7 @@ fun ExpandableCard(
                     contentDescription = stringResource(id = R.string.workoutImage),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
+                        .clip(defaultRoundedCornerShape)
                         .aspectRatio(1f)
                         .constrainAs(imageRef) {
                             start.linkTo(parent.start)
@@ -122,7 +123,7 @@ fun ExpandableCard(
                         }
                 )
 
-                Details(
+                DetailsSection(
                     topText = topText,
                     bottomText = bottomText,
                     extraText = extraText,
@@ -222,62 +223,6 @@ private fun ActionButton(
 }
 
 @Composable
-private fun Details(
-    modifier: Modifier,
-    textColour: Color,
-    topText: String,
-    bottomText: String,
-    extraText: String? = null
-) {
-    ConstraintLayout(modifier = modifier) {
-        val (topTextRef, bottomTextRef, extraTextRef) = createRefs()
-
-        Text(
-            text = topText,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = textColour,
-            modifier = Modifier
-                .constrainAs(topTextRef) {
-                    start.linkTo(parent.start)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(bottomTextRef.top)
-                }
-        )
-
-        Text(
-            text = bottomText,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.ExtraLight,
-            color = textColour,
-            modifier = Modifier
-                .constrainAs(bottomTextRef) {
-                    start.linkTo(parent.start)
-                    top.linkTo(topTextRef.bottom)
-                    bottom.linkTo(parent.bottom)
-                }
-                .padding(end = 15.dp)
-        )
-
-        extraText?.let {
-            Text(
-                text = extraText,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.ExtraLight,
-                color = textColour,
-                modifier = Modifier
-                    .constrainAs(extraTextRef) {
-                        start.linkTo(bottomTextRef.end)
-                        top.linkTo(topTextRef.bottom)
-                        bottom.linkTo(parent.bottom)
-                    }
-                    .padding(end = 10.dp)
-            )
-        }
-    }
-}
-
-@Composable
 @Preview
 fun ExpendableDayCardPreview() {
     val topText = dummyDay.dayOfWeek.toString().lowercase()
@@ -293,7 +238,7 @@ fun ExpendableDayCardPreview() {
             bottomText = dummyWorkout.name,
             imagePath = dummyWorkout.imagePath,
             topButtonImageVector = Icons.Rounded.ChangeCircle,
-            topButtonText = stringResource(id = R.string.editWorkout),
+            topButtonText = stringResource(id = R.string.changeWorkout),
             bottomButtonImageVector = Icons.Rounded.RemoveRedEye,
             bottomButtonText = stringResource(id = R.string.viewWorkout)
         )

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.gogym.R
 import uk.ac.aber.dcs.cs31620.gogym.model.day.DataViewModel
+import uk.ac.aber.dcs.cs31620.gogym.pathToRestDayImage
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.ExpandableCard
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.TopLevelScaffold
 import java.util.Locale
@@ -56,7 +57,7 @@ fun WeekPlannerScreen(
                     val workout = day.workoutID?.let { dataViewModel.getDaysWorkout(day) }
                     val imagePath =
                         workout?.imagePath
-                            ?: "file:///android_asset/images/eirik_uhlen_rest_day.jpg"
+                            ?: pathToRestDayImage
                     val workoutName = workout?.name ?: stringResource(id = R.string.noSession)
                     val dayName = day.dayOfWeek.toString().lowercase()
                         .replaceFirstChar { itDay ->
@@ -70,7 +71,7 @@ fun WeekPlannerScreen(
                         topText = dayName,
                         bottomText = workoutName,
                         topButtonImageVector = Icons.Rounded.ChangeCircle,
-                        topButtonText = stringResource(id = R.string.editWorkout),
+                        topButtonText = stringResource(id = R.string.changeWorkout),
                         bottomButtonImageVector = Icons.Rounded.RemoveRedEye,
                         bottomButtonText = stringResource(id = R.string.viewWorkout)
                     )

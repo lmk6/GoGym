@@ -23,6 +23,7 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 import uk.ac.aber.dcs.cs31620.gogym.ui.week_planner.WeekPlannerScreen
 import uk.ac.aber.dcs.cs31620.gogym.ui.workouts.WorkoutViewScreen
+import uk.ac.aber.dcs.cs31620.gogym.ui.workouts.WorkoutsScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +57,13 @@ fun BuildNavigationGraph(
     ) {
         composable(Screen.Home.route) { HomeScreenTopLevel(navController, dataViewModel) }
         composable(Screen.WeekPlanner.route) { WeekPlannerScreen(navController, dataViewModel) }
-        composable(Screen.Exercises.route) { ExercisesScreen(navController, dataViewModel) }
+        composable("${Screen.Exercises.route}/{workoutID}") { backStackEntry ->
+            ExercisesScreen(
+                navController,
+                dataViewModel,
+                backStackEntry.arguments?.getString("workoutID")
+            )
+        }
         composable("${Screen.WorkoutView.route}/{workoutID}") { backStackEntry ->
             WorkoutViewScreen(
                 navController,
@@ -64,5 +71,6 @@ fun BuildNavigationGraph(
                 backStackEntry.arguments?.getString("workoutID")
             )
         }
+        composable(Screen.Sessions.route) { WorkoutsScreen(navController, dataViewModel) }
     }
 }

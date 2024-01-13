@@ -1,56 +1,36 @@
 package uk.ac.aber.dcs.cs31620.gogym.ui.home
 
-import android.net.Uri
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeJoin
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 import uk.ac.aber.dcs.cs31620.gogym.R
 import uk.ac.aber.dcs.cs31620.gogym.model.day.DataViewModel
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.TodayWorkoutCard
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.TopLevelScaffold
-import uk.ac.aber.dcs.cs31620.gogym.ui.components.WorkoutCard
+import uk.ac.aber.dcs.cs31620.gogym.ui.components.CustomCard
 import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 
@@ -117,8 +97,18 @@ fun HomeScreen(
                     .weight(1f)
             ) {
                 items(workoutsList) {
-                    WorkoutCard(
-                        workout = it,
+
+                    val topText = it.name
+                    val numOfExercises = it.exercisesIDs.size
+                    val bottomText =
+                        "$numOfExercises Exercise${if (numOfExercises != 1) "s" else ""}"
+                    val extraText = "~${it.getFormattedDuration()}"
+
+                    CustomCard(
+                        imagePath = it.imagePath,
+                        topText = topText,
+                        bottomText = bottomText,
+                        extraText = extraText,
                         clickAction = {
                             navController.navigate("${Screen.WorkoutView.route}/${it.id}") {
                                 popUpTo(navController.graph.findStartDestination().id) {

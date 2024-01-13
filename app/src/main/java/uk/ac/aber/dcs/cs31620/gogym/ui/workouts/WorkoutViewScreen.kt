@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.gogym.R
 import uk.ac.aber.dcs.cs31620.gogym.model.day.DataViewModel
@@ -53,10 +56,17 @@ fun WorkoutViewScreen(
         TopLevelScaffold(
             navController = navController,
             coroutineScope = coroutineScope,
-            title = stringResource(id = R.string.ListOfExercises),
+            title = workout.name,
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        navController.navigate("${Screen.Exercises.route}/${workout.id}") {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                        }
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
@@ -74,6 +84,15 @@ fun WorkoutViewScreen(
                     }
                 )
             },
+            topAppBarActionContent = {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        imageVector = Icons.Filled.EditNote,
+                        contentDescription = stringResource(id = R.string.editWorkout),
+                        modifier = Modifier.size(128.dp)
+                    )
+                }
+            }
         ) { innerPadding ->
             Column(
                 modifier = Modifier
@@ -91,13 +110,15 @@ fun WorkoutViewScreen(
                     itemsIndexed(selectedExercises) { index, exercise ->
 
                         val setsText =
-                            "${exercise.numOfSets} Set${if (exercise.numOfSets != 1) "s" else ""}"
+                            "${exercise.numOfSets} " +
+                                    if (exercise.dropSetsFeature) " Drop" else "" +
+                                            "Set" + if (exercise.numOfSets != 1) "s" else ""
 
                         val duration =
                             "~${exercise.getFormattedDuration()}"
 
                         val deletedText = stringResource(id = R.string.exerciseRemoved)
-                        val cannotDeleteText = stringResource(id = R.string.cannotDelete)
+                        val cannotDeleteText = stringResource(id = R.string.cannotDeleteExercise)
 
                         ExpandableCard(
                             modifier = Modifier.padding(top = 10.dp),
@@ -111,10 +132,12 @@ fun WorkoutViewScreen(
                             bottomButtonImageVector = Icons.Filled.Delete,
                             onClickBottomButton = {
                                 if (workout.exercisesIDs.size > 1) {
-                                    val newExercisesIDs = workout.exercisesIDs.toMutableList().apply {
-                                        removeAt(index)
-                                    }
-                                    val updatedWorkout = workout.copy(exercisesIDs = newExercisesIDs)
+                                    val newExercisesIDs =
+                                        workout.exercisesIDs.toMutableList().apply {
+                                            removeAt(index)
+                                        }
+                                    val updatedWorkout =
+                                        workout.copy(exercisesIDs = newExercisesIDs)
 
                                     updatedWorkout.totalDuration =
                                         updatedWorkout.totalDuration.minus(exercise.duration)
@@ -141,3 +164,5 @@ fun WorkoutViewScreen(
         }
     }
 }
+
+

@@ -1,8 +1,6 @@
 package uk.ac.aber.dcs.cs31620.gogym.datasource
 
 import android.app.Application
-import uk.ac.aber.dcs.cs31620.gogym.datasource.util.LocalDateConverter
-import uk.ac.aber.dcs.cs31620.gogym.model.day.Day
 import uk.ac.aber.dcs.cs31620.gogym.model.day.DayOfWeek
 import uk.ac.aber.dcs.cs31620.gogym.model.exercise.Exercise
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
@@ -41,6 +39,10 @@ class GoGymRepository(application: Application) {
 
     fun deleteExercise(exercise: Exercise) {
         exerciseDao.deleteExercise(exercise)
+    }
+
+    fun deleteWorkout(workout: Workout) {
+        workoutDao.deleteWorkout(workout)
     }
 
     fun updateWorkout(workout: Workout) {

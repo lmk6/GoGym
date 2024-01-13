@@ -31,7 +31,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import uk.ac.aber.dcs.cs31620.gogym.R
+import uk.ac.aber.dcs.cs31620.gogym.defaultRoundedCornerShape
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
+import uk.ac.aber.dcs.cs31620.gogym.pathToRestDayImage
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 
 
@@ -45,7 +47,7 @@ fun TodayWorkoutCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
+            .clip(defaultRoundedCornerShape)
             .clickable { workout?.let(clickAction) }
             .height(180.dp),
     ) {
@@ -55,7 +57,7 @@ fun TodayWorkoutCard(
         ) {
 
             val imagePath =
-                workout?.imagePath ?: "file:///android_asset/images/eirik_uhlen_rest_day.jpg"
+                workout?.imagePath ?: pathToRestDayImage
 
             GlideImage(
                 model = Uri.parse(imagePath),

@@ -22,6 +22,9 @@ import uk.ac.aber.dcs.cs31620.gogym.model.exercise.ExerciseDao
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutDao
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutStatus
+import uk.ac.aber.dcs.cs31620.gogym.pathToAssetImages
+import uk.ac.aber.dcs.cs31620.gogym.pathToPushUpsImage
+import uk.ac.aber.dcs.cs31620.gogym.pathToSquatImage
 import java.time.Duration
 import java.time.LocalDate
 
@@ -67,14 +70,12 @@ abstract class GoGymRoomDatabase : RoomDatabase() {
 
         private fun populateDatabase(context: Context, instance: GoGymRoomDatabase) {
 
-            val imagePath = "file:///android_asset/images/"
-
             val regularPushUps = Exercise(
                 name = "Regular Push Ups",
                 numOfSets = 2,
                 duration = Duration.ofMinutes(6),
                 repsPerSet = 8,
-                imagePath = "${imagePath}push_ups_img.jpg"
+                imagePath = pathToPushUpsImage
             )
 
             val squats = Exercise(
@@ -82,7 +83,7 @@ abstract class GoGymRoomDatabase : RoomDatabase() {
                 numOfSets = 1,
                 duration = Duration.ofMinutes(1).plusSeconds(30),
                 repsPerSet = 8,
-                imagePath = "${imagePath}squat.jpg"
+                imagePath = pathToSquatImage
             )
 
             val exerciseDao = instance.exerciseDao()
@@ -95,7 +96,7 @@ abstract class GoGymRoomDatabase : RoomDatabase() {
 
             val workout = Workout(
                 name = "Push Ups",
-                imagePath = "${imagePath}push_ups_img.jpg",
+                imagePath = pathToPushUpsImage,
                 exercisesIDs = exercises,
                 totalDuration = regularPushUps.duration
                     .plus(regularPushUps.duration)
@@ -105,13 +106,13 @@ abstract class GoGymRoomDatabase : RoomDatabase() {
 
             val workout1 = Workout(
                 name = "PushUps",
-                imagePath = "${imagePath}squat.jpg",
+                imagePath = pathToSquatImage,
                 exercisesIDs = listOf(ex1ID, ex2ID),
                 totalDuration = regularPushUps.duration.plus(squats.duration)
             )
 
             val workoutID = workoutDao.insertSingleWorkout(workout)
-            workoutDao.insertSingleWorkout(workout1)
+            val workoutID2 = workoutDao.insertSingleWorkout(workout1)
 
             val days = listOf(
                 Day(
@@ -132,6 +133,7 @@ abstract class GoGymRoomDatabase : RoomDatabase() {
                     dayOfWeek = DayOfWeek.FRIDAY
                 ),
                 Day(
+                    workoutID = workoutID2,
                     dayOfWeek = DayOfWeek.SATURDAY
                 ),
                 Day(
