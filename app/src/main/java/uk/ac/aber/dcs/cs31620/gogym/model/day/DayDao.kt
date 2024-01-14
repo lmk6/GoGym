@@ -7,7 +7,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
 
 @Dao
 interface DayDao {
@@ -33,9 +32,9 @@ interface DayDao {
     @Query("SELECT * FROM days")
     fun getNonLiveAllDays(): List<Day?>
 
-    @Query("SELECT workouts.* FROM workouts INNER JOIN days ON days.workout_id = workouts.id WHERE days.dayOfWeek = :today")
-    fun getWorkoutForToday(today: DayOfWeek): LiveData<Workout?>
-
     @Query("SELECT * FROM days WHERE id = :dayID LIMIT 1")
     fun getNonLiveDayByID(dayID: Long): Day
+
+    @Query("SELECT * FROM days where dayOfWeek = :day LIMIT 1")
+    fun getNonLiveDayByDayOfWeek(day: DayOfWeek): Day
 }

@@ -66,7 +66,12 @@ fun HomeScreen(
                         start = 10.dp,
                         end = 10.dp
                     ),
-                workout = todayWorkout
+                workout = todayWorkout,
+                clickAction = { id ->
+                    navController.navigate("${Screen.SessionRun.route}/${id}") {
+                        launchSingleTop = true
+                    }
+                }
             )
 
             LazyVerticalGrid(
@@ -109,6 +114,9 @@ fun HomeScreen(
 fun HomeScreenPreview() {
     val navController = rememberNavController()
     GoGymTheme(dynamicColor = false) {
-        HomeScreen(navController = navController, todayWorkout = null)
+        HomeScreen(
+            navController = navController,
+            todayWorkout = null
+        )
     }
 }

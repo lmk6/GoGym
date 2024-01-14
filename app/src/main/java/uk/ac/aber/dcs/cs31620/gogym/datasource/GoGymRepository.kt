@@ -5,7 +5,6 @@ import uk.ac.aber.dcs.cs31620.gogym.model.day.Day
 import uk.ac.aber.dcs.cs31620.gogym.model.day.DayOfWeek
 import uk.ac.aber.dcs.cs31620.gogym.model.exercise.Exercise
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
-import java.time.LocalDate
 
 class GoGymRepository(application: Application) {
     private val exerciseDao = GoGymRoomDatabase.getDatabase(application)!!.exerciseDao()
@@ -36,8 +35,9 @@ class GoGymRepository(application: Application) {
 
     fun getDayByIDNonLive(dayID: Long) = dayDao.getNonLiveDayByID(dayID)
 
-    fun getTodayWorkout() =
-        dayDao.getWorkoutForToday(DayOfWeek.valueOf(LocalDate.now().dayOfWeek.toString()))
+    fun getDayByDayOfWeekNonLive(day: DayOfWeek) = dayDao.getNonLiveDayByDayOfWeek(day)
+
+    fun getWorkoutByDayOfWeek(day: DayOfWeek) = workoutDao.getWorkoutForDay(day)
 
     fun getWorkoutExercises(workout: Workout) = exerciseDao.getExercisesByIDs(workout.exercisesIDs)
 
@@ -49,12 +49,15 @@ class GoGymRepository(application: Application) {
         exerciseDao.deleteExercise(exercise)
     }
     fun updateExercise(updatedExercise: Exercise) = exerciseDao.updateExercise(updatedExercise)
+
     fun deleteWorkout(workout: Workout) {
         workoutDao.deleteWorkout(workout)
     }
+
     fun updateWorkout(workout: Workout) {
         workoutDao.updateWorkout(workout)
     }
+
     fun getWorkoutNonLive(workoutID: Long) = workoutDao.getNonLiveWorkoutByID(workoutID)
 
 }

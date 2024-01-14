@@ -5,9 +5,17 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import uk.ac.aber.dcs.cs31620.gogym.datasource.GoGymRepository
 import uk.ac.aber.dcs.cs31620.gogym.model.day.Day
+import uk.ac.aber.dcs.cs31620.gogym.model.day.DayOfWeek
 import uk.ac.aber.dcs.cs31620.gogym.model.exercise.Exercise
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
+import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutStatus
+import java.time.LocalDate
 
+/**
+ * Data View model
+ * Gives the access to all Dao interfaces
+ * It may not be the cleanest approach but I find it easier to work with
+ */
 class DataViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: GoGymRepository = GoGymRepository(application)
 
@@ -15,7 +23,9 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
     var workouts: LiveData<List<Workout>> = loadWorkouts()
     var exercises: LiveData<List<Exercise>> = loadExercises()
 
-    fun getTodayWorkout(): LiveData<Workout?> = repository.getTodayWorkout()
+    fun getTodayWorkout(): LiveData<Workout?> {
+        return repository.getWorkoutByDayOfWeek(getTodayDayOfWeek())
+    }
 
     fun getDaysWorkout(day: Day): Workout = repository.getWorkoutNonLive(day.workoutID!!)!!
 
@@ -125,6 +135,8 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getNonLiveWorkoutByID(workoutID: Long) =
         repository.getWorkoutNonLive(workoutID)
+
+    private fun getTodayDayOfWeek() = DayOfWeek.valueOf(LocalDate.now().dayOfWeek.toString())
 
     private fun loadDays(): LiveData<List<Day>> {
         return repository.getAllDays()

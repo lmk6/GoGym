@@ -111,8 +111,8 @@ fun WorkoutViewScreen(
                 }
             },
             navigationBarTopButton = {
-                StartButton {
-                    navController.navigate("${Screen.SessionRun}/${workout.id}") {
+                StartSessionButton {
+                    navController.navigate("${Screen.SessionRun.route}/${workout.id}") {
                         launchSingleTop = true
                     }
                 }
@@ -215,7 +215,7 @@ private fun getExerciseDetails(exercise: Exercise): List<String> {
 }
 
 @Composable
-private fun StartButton(
+private fun StartSessionButton(
     onClick: () -> Unit
 ) {
     Row(

@@ -11,9 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.gogym.datasource.util.DurationConverter
 import uk.ac.aber.dcs.cs31620.gogym.datasource.util.ExercisesIDsListConverter
-import uk.ac.aber.dcs.cs31620.gogym.datasource.util.LocalDateConverter
 import uk.ac.aber.dcs.cs31620.gogym.datasource.util.StatusConverter
-import uk.ac.aber.dcs.cs31620.gogym.datasource.util.WorkoutConverter
 import uk.ac.aber.dcs.cs31620.gogym.model.day.Day
 import uk.ac.aber.dcs.cs31620.gogym.model.day.DayDao
 import uk.ac.aber.dcs.cs31620.gogym.model.day.DayOfWeek

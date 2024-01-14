@@ -82,7 +82,7 @@ fun BuildNavigationGraph(
                 backStackEntry.arguments?.getString("dayID")
             )
         }
-        composable("${Screen.SessionRun}/{workoutID}") { backStackEntry ->
+        composable("${Screen.SessionRun.route}/{workoutID}") { backStackEntry ->
             val workoutID = backStackEntry.arguments?.getString("workoutID").toString().toLong()
             val workout = dataViewModel.getNonLiveWorkoutByID(workoutID)
 

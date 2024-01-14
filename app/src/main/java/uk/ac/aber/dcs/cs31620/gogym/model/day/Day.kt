@@ -7,6 +7,10 @@ import androidx.room.PrimaryKey
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutStatus
 
+/**
+ * Day entity
+ * Foreign key automates the deletion of a scheduled workout
+ */
 @Entity(tableName = "days",
     foreignKeys = [
         ForeignKey(
@@ -24,6 +28,6 @@ data class Day(
     var dayOfWeek: DayOfWeek,
     @ColumnInfo(name = "workout_id")
     var workoutID: Long? = null,
-    @ColumnInfo(name = "workout_status")
-    var workoutStatus: WorkoutStatus = WorkoutStatus.TODAY
+//    @ColumnInfo(name = "workout_status")
+//    var workoutStatus: WorkoutStatus = WorkoutStatus.UNCOMPLETED
 )

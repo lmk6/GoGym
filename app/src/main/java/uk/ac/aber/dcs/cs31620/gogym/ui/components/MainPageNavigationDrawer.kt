@@ -7,8 +7,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarViewWeek
 import androidx.compose.material.icons.filled.FormatListBulleted
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.HomeMax
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ViewList
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -75,10 +73,6 @@ fun MainPageNavigationDrawer(
         Pair(
             Icons.Default.CalendarViewWeek,
             stringResource(R.string.weekPlanner)
-        ),
-        Pair(
-            Icons.Default.Settings,
-            stringResource(R.string.settings)
         )
     )
     val selectedItem = rememberSaveable { mutableIntStateOf(0) }

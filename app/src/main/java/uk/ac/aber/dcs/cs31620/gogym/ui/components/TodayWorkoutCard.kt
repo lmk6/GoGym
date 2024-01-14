@@ -33,6 +33,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import uk.ac.aber.dcs.cs31620.gogym.R
 import uk.ac.aber.dcs.cs31620.gogym.defaultRoundedCornerShape
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
+import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutStatus
 import uk.ac.aber.dcs.cs31620.gogym.pathToRestDayImage
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 
@@ -42,13 +43,13 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 fun TodayWorkoutCard(
     modifier: Modifier,
     workout: Workout?,
-    clickAction: (Workout) -> Unit = {}
+    clickAction: (Long) -> Unit = {}
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .clip(defaultRoundedCornerShape)
-            .clickable { workout?.let(clickAction) }
+            .clickable { workout?.let { clickAction(workout.id) } }
             .height(180.dp),
     ) {
         Box(
@@ -63,10 +64,13 @@ fun TodayWorkoutCard(
                 model = Uri.parse(imagePath),
                 contentDescription = stringResource(R.string.todayWorkout),
                 contentScale = ContentScale.Crop,
-                colorFilter = ColorFilter.tint(color = Color.Gray, blendMode = BlendMode.Darken)
+                colorFilter = ColorFilter.tint(
+                    color = Color.Gray,
+                    blendMode = BlendMode.Darken
+                )
             )
 
-            ConstraintLayout (modifier = Modifier.fillMaxSize()) {
+            ConstraintLayout(modifier = Modifier.fillMaxSize()) {
 
                 val (mainTextRef, textBoxRef) = createRefs()
 
@@ -88,7 +92,8 @@ fun TodayWorkoutCard(
                         centerVerticallyTo(parent)
                     },
                     startString = upperBtnString,
-                    followupString = lowerBtnString)
+                    followupString = lowerBtnString
+                )
             }
 
         }
@@ -120,7 +125,7 @@ fun MainTextConstrained(
         )
         Text(
             text = workoutName,
-            fontSize = 18 .sp,
+            fontSize = 18.sp,
             color = Color.White,
             textDecoration = TextDecoration.Underline,
             modifier = Modifier
@@ -192,6 +197,9 @@ fun TextBoxPreview() {
 fun TodayWorkoutPreview() {
     val todayWorkout = null
     GoGymTheme(dynamicColor = false) {
-        TodayWorkoutCard(modifier = Modifier, workout = todayWorkout)
+        TodayWorkoutCard(
+            modifier = Modifier,
+            workout = todayWorkout
+        )
     }
 }
