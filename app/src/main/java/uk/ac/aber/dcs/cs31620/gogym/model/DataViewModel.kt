@@ -17,7 +17,7 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getTodayWorkout(): LiveData<Workout?> = repository.getTodayWorkout()
 
-    fun getDaysWorkout(day: Day): Workout = repository.getWorkoutNonLive(day.workoutID!!)
+    fun getDaysWorkout(day: Day): Workout = repository.getWorkoutNonLive(day.workoutID!!)!!
 
     fun getNonLiveDayByID(dayID: Long): Day = repository.getDayByIDNonLive(dayID)
 
@@ -97,6 +97,8 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
         return false
     }
 
+    fun insertWorkout(workout: Workout) = repository.insertWorkout(workout)
+
     fun updateWorkout(workout: Workout) = repository.updateWorkout(workout)
 
     fun updateDay(day: Day): Boolean {
@@ -117,11 +119,11 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
         return true
     }
 
+
     fun getWorkoutByID(workoutID: Long): LiveData<Workout> =
         repository.getWorkout(workoutID)
 
-
-    fun getNonLiveWorkoutByID(workoutID: Long): Workout =
+    fun getNonLiveWorkoutByID(workoutID: Long) =
         repository.getWorkoutNonLive(workoutID)
 
     private fun loadDays(): LiveData<List<Day>> {

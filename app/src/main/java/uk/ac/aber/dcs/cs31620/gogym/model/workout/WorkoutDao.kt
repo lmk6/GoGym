@@ -41,6 +41,6 @@ interface WorkoutDao {
     fun getWorkoutByID(workoutID: Long): LiveData<Workout>
 
     @Query("SELECT * FROM workouts WHERE id = :workoutID")
-    fun getNonLiveWorkoutByID(workoutID: Long): Workout
+    fun getNonLiveWorkoutByID(workoutID: Long): Workout?
 
 }

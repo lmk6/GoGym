@@ -5,7 +5,13 @@
       <entry key="ExerciseDialogPreview">
         <State />
       </entry>
+      <entry key="ExpendableCardPreview">
+        <State />
+      </entry>
       <entry key="ExpendableDayCardPreview">
+        <State />
+      </entry>
+      <entry key="WorkoutDialogPreview">
         <State />
       </entry>
       <entry key="app">

@@ -21,12 +21,9 @@ import uk.ac.aber.dcs.cs31620.gogym.model.exercise.Exercise
 import uk.ac.aber.dcs.cs31620.gogym.model.exercise.ExerciseDao
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutDao
-import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutStatus
-import uk.ac.aber.dcs.cs31620.gogym.pathToAssetImages
 import uk.ac.aber.dcs.cs31620.gogym.pathToPushUpsImage
 import uk.ac.aber.dcs.cs31620.gogym.pathToSquatImage
 import java.time.Duration
-import java.time.LocalDate
 
 @Database(entities = [Day::class, Workout::class, Exercise::class], version = 1)
 @TypeConverters(

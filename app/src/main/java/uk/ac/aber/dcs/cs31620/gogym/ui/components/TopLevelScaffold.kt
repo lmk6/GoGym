@@ -25,6 +25,7 @@ fun TopLevelScaffold(
     snackbarHostState: SnackbarHostState? = null,
     title: String? = null,
     topAppBarActionContent: @Composable () -> Unit = {},
+    navigationBarTopButton: @Composable () -> Unit = {},
     pageContent: @Composable (innerPadding: PaddingValues) -> Unit = {}
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -53,10 +54,13 @@ fun TopLevelScaffold(
                     },
                     title = title,
                     actions = { topAppBarActionContent() }
-                    )
+                )
             },
             bottomBar = {
-                MainPageNavigationBar(navController)
+                MainPageNavigationBar(
+                    navController,
+                    navigationBarTopButton
+                    )
             },
             floatingActionButton = floatingActionButton,
             snackbarHost = {

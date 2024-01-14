@@ -36,7 +36,7 @@ fun DetailsSection(
 
         Text(
             text = bottomText,
-            fontSize = 20.sp,
+            fontSize = 18.sp,
             fontWeight = FontWeight.ExtraLight,
             color = textColour,
             modifier = Modifier
@@ -51,7 +51,7 @@ fun DetailsSection(
         extraText?.let {
             Text(
                 text = extraText,
-                fontSize = 20.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.ExtraLight,
                 color = textColour,
                 modifier = Modifier

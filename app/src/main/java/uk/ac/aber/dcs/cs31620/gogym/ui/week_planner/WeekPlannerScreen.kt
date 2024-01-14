@@ -75,20 +75,14 @@ fun WeekPlannerScreen(
                         topButtonText = stringResource(id = R.string.changeWorkout),
                         onClickTopButton = {
                             navController.navigate("${Screen.Sessions.route}/${day.id}") {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
                                 launchSingleTop = true
                             }
                         },
-                        bottomButtonImageVector = Icons.Rounded.RemoveRedEye,
-                        bottomButtonText = stringResource(id = R.string.viewWorkout),
+                        bottomButtonImageVector = workout?.let { Icons.Rounded.RemoveRedEye },
+                        bottomButtonText = workout?.let { stringResource(id = R.string.viewWorkout) },
                         onClickBottomButton = {
                             it.workoutID?.let { id ->
                                 navController.navigate("${Screen.WorkoutView.route}/${id}") {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
                                     launchSingleTop = true
                                 }
                             }

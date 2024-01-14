@@ -126,9 +126,7 @@ fun MainPageNavigationDrawer(
                                     }
                                 route?.let {
                                     navController.navigate(route = route) {
-                                        popUpTo(navController.graph.findStartDestination().id) {
-                                            saveState = true
-                                        }
+                                        popUpTo(navController.graph.findStartDestination().id)
                                         launchSingleTop = true
                                     }
                                 }

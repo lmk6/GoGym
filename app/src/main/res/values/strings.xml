@@ -51,4 +51,6 @@
     <string name="restDay">Rest Day</string>
     <string name="minimumOneWorkout">There must be at least one Workout Scheduled!</string>
     <string name="createWorkout">Create New Workout</string>
+    <string name="selectExercise">Select the Exercise</string>
+    <string name="exerciseImage">Image of an Exercise</string>
 </resources>

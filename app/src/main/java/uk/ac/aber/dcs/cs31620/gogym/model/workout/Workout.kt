@@ -3,7 +3,6 @@ package uk.ac.aber.dcs.cs31620.gogym.model.workout
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import uk.ac.aber.dcs.cs31620.gogym.model.exercise.Exercise
 import java.time.Duration
 
 @Entity(tableName = "workouts")

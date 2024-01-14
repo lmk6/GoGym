@@ -4,9 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutStatus
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
-import java.time.LocalDate
 
 @Entity(tableName = "days",
     foreignKeys = [

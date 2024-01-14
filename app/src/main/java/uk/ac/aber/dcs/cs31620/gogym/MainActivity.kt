@@ -1,6 +1,5 @@
 package uk.ac.aber.dcs.cs31620.gogym
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,7 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -22,6 +20,7 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.home.HomeScreenTopLevel
 import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 import uk.ac.aber.dcs.cs31620.gogym.ui.week_planner.WeekPlannerScreen
+import uk.ac.aber.dcs.cs31620.gogym.ui.workouts.SessionRunTopLevelScreen
 import uk.ac.aber.dcs.cs31620.gogym.ui.workouts.WorkoutViewScreen
 import uk.ac.aber.dcs.cs31620.gogym.ui.workouts.WorkoutsScreen
 
@@ -42,6 +41,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/**
+ * Based on what was taught during workshops
+ * Builds a navigation graph
+ * Some routes include a parameter for the screen to screen communication
+ */
 @Composable
 fun BuildNavigationGraph(
     dataViewModel: DataViewModel = viewModel(),
@@ -49,15 +53,13 @@ fun BuildNavigationGraph(
 ) {
     val startDestination = remember { Screen.Home.route }
 
-    val context = LocalContext.current as Activity
-
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
         composable(Screen.Home.route) { HomeScreenTopLevel(navController, dataViewModel) }
         composable(Screen.WeekPlanner.route) { WeekPlannerScreen(navController, dataViewModel) }
-        composable(Screen.Exercises.route) { ExercisesScreen(navController, dataViewModel)}
+        composable(Screen.Exercises.route) { ExercisesScreen(navController, dataViewModel) }
         composable("${Screen.Exercises.route}/{workoutID}") { backStackEntry ->
             ExercisesScreen(
                 navController,
@@ -79,6 +81,18 @@ fun BuildNavigationGraph(
                 dataViewModel,
                 backStackEntry.arguments?.getString("dayID")
             )
+        }
+        composable("${Screen.SessionRun}/{workoutID}") { backStackEntry ->
+            val workoutID = backStackEntry.arguments?.getString("workoutID").toString().toLong()
+            val workout = dataViewModel.getNonLiveWorkoutByID(workoutID)
+
+            workout?.let {
+                SessionRunTopLevelScreen(
+                    navController,
+                    dataViewModel,
+                    workout
+                )
+            }
         }
     }
 }

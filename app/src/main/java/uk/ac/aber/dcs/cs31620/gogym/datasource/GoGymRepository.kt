@@ -43,10 +43,11 @@ class GoGymRepository(application: Application) {
 
     fun getWorkout(workoutID: Long) = workoutDao.getWorkoutByID(workoutID)
 
+    fun insertWorkout(workout: Workout) = workoutDao.insertSingleWorkout(workout)
+
     fun deleteExercise(exercise: Exercise) {
         exerciseDao.deleteExercise(exercise)
     }
-
     fun updateExercise(updatedExercise: Exercise) = exerciseDao.updateExercise(updatedExercise)
     fun deleteWorkout(workout: Workout) {
         workoutDao.deleteWorkout(workout)

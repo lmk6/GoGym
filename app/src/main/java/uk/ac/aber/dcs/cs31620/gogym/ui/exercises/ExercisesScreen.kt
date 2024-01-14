@@ -17,6 +17,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -63,7 +64,9 @@ fun ExercisesScreen(
     TopLevelScaffold(
         navController = navController,
         coroutineScope = coroutineScope,
-        title = stringResource(id = R.string.ListOfExercises),
+        title = stringResource(
+            workout?.let { R.string.selectExercise } ?: R.string.ListOfExercises
+        ),
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
@@ -105,7 +108,7 @@ fun ExercisesScreen(
                     val exercise = it
 
                     val setsText =
-                        "${exercise.numOfSets} " + if (exercise.dropSetsFeature) " Drop" else "" +
+                        "${exercise.numOfSets} " + if (exercise.dropSetsFeature) "Drop" else "" +
                                 "Set" + if (exercise.numOfSets != 1) "s" else ""
 
                     val duration =
@@ -157,9 +160,7 @@ fun ExercisesScreen(
                                 dataViewModel.updateWorkout(updatedWorkout)
 
                                 navController.navigate("${Screen.WorkoutView.route}/${updatedWorkout.id}") {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
+                                    popUpTo("${Screen.WorkoutView.route}/${updatedWorkout.id}")
                                     launchSingleTop = true
                                 }
                             }
@@ -202,6 +203,16 @@ fun ExercisesScreen(
                         ?: dataViewModel.insertExercise(updatedExercise)
                 }
             )
+        }
+    }
+
+    // Makes sure that the newly created Workout has at least one exercise
+    DisposableEffect(Unit) {
+        onDispose {
+            workout?.let {
+                if (workout.exercisesIDs.isEmpty())
+                    dataViewModel.deleteWorkout(workout)
+            }
         }
     }
 }

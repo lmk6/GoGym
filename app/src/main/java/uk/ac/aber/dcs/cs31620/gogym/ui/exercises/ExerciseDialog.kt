@@ -66,7 +66,9 @@ fun ExerciseDialog(
     Dialog(
         onDismissRequest = { onDismiss() },
         properties = DialogProperties(
-            usePlatformDefaultWidth = false
+            usePlatformDefaultWidth = false,
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false
         ),
     ) {
         Card(

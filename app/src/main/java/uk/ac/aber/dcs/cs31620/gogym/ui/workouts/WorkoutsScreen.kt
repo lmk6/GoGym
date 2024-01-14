@@ -55,9 +55,13 @@ fun WorkoutsScreen(
     val day: Day? = dayID?.let { dataViewModel.getNonLiveDayByID(dayID) }
 
     var showConfirmationDialog by remember { mutableStateOf(false) }
+    var showCreateNewDialog by remember { mutableStateOf(false) }
     var workoutToDelete by remember { mutableStateOf<Workout?>(null) }
     var showDeletionProgressSnackBar by remember { mutableStateOf(false) }
+
     var successfulDeletion = false
+
+    val context = LocalContext.current
 
     TopLevelScaffold(
         navController = navController,
@@ -65,7 +69,7 @@ fun WorkoutsScreen(
         title = stringResource(id = R.string.ListOfSessions),
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /*TODO*/ }
+                onClick = { showCreateNewDialog = true }
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -90,16 +94,13 @@ fun WorkoutsScreen(
                 .fillMaxSize()
         ) {
             val state = rememberLazyGridState()
-            val context = LocalContext.current
 
             day?.let {
                 EmptySessionCard {
                     val updatedDay = day.copy(workoutID = null)
                     dataViewModel.updateDay(updatedDay)
                     navController.navigate(Screen.WeekPlanner.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
+                        popUpTo(Screen.WeekPlanner.route)
                         launchSingleTop = true
                     }
                 }
@@ -135,9 +136,7 @@ fun WorkoutsScreen(
                             bottomButtonImageVector = Icons.Filled.Delete,
                             onClickTopButton = {
                                 navController.navigate("${Screen.WorkoutView.route}/${it.id}") {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
+                                    popUpTo("${Screen.WorkoutView.route}/${it.id}")
                                     launchSingleTop = true
                                 }
                             },
@@ -164,9 +163,7 @@ fun WorkoutsScreen(
                                 val updatedDay = day.copy(workoutID = workout.id)
                                 dataViewModel.updateDay(updatedDay)
                                 navController.navigate(Screen.WeekPlanner.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
+                                    popUpTo(Screen.WeekPlanner.route)
                                     launchSingleTop = true
                                 }
                             }
@@ -174,6 +171,7 @@ fun WorkoutsScreen(
                 }
             }
         }
+
         if (showConfirmationDialog) {
             CustomAlertDialog(
                 titleText = stringResource(id = R.string.areYouSure),
@@ -186,21 +184,35 @@ fun WorkoutsScreen(
                 }
             )
         }
+
         if (showDeletionProgressSnackBar) {
-            val ctx = LocalContext.current
             if (successfulDeletion)
                 Toast.makeText(
-                    ctx,
+                    context,
                     stringResource(id = R.string.workoutDeleted),
                     Toast.LENGTH_LONG
                 ).show()
             else
                 Toast.makeText(
-                    ctx,
+                    context,
                     stringResource(id = R.string.onlyWorkoutAssigned),
                     Toast.LENGTH_LONG
                 ).show()
             showDeletionProgressSnackBar = false
+        }
+
+        if (showCreateNewDialog) {
+            WorkoutDialog(
+                onDismiss = {
+                    showCreateNewDialog = false
+                },
+                onConfirm = { newWorkout ->
+                    val id = dataViewModel.insertWorkout(newWorkout)
+                    navController.navigate("${Screen.Exercises.route}/${id}") {
+                        launchSingleTop = true
+                    }
+                }
+            )
         }
     }
 }
@@ -211,7 +223,6 @@ private fun EmptySessionCard(clickAction: () -> Unit) {
         modifier = Modifier.padding(
             top = 10.dp,
             start = 10.dp,
-            end = 10.dp
         ),
         imagePath = pathToRestDayImage,
         topText = stringResource(R.string.restDay),

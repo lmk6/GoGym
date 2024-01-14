@@ -18,7 +18,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.rounded.ChangeCircle
@@ -44,6 +46,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,11 +69,12 @@ fun ExpandableCard(
     bottomText: String,
     extraText: String? = null,
     topButtonText: String,
-    bottomButtonText: String,
+    bottomButtonText: String? = null,
     topButtonImageVector: ImageVector,
-    bottomButtonImageVector: ImageVector,
+    bottomButtonImageVector: ImageVector? = null,
     onClickTopButton: () -> Unit = {},
     onClickBottomButton: () -> Unit = {},
+    detailsList: List<String>? = null
 ) {
     var expandedState by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
@@ -163,8 +167,12 @@ fun ExpandableCard(
                     )
                 }
             }
-
             if (expandedState) {
+
+                detailsList?.let {
+                    ExpandedDetails(detailsList)
+                }
+
                 ActionButton(
                     actionDescription = topButtonText,
                     iconImage = topButtonImageVector,
@@ -172,17 +180,48 @@ fun ExpandableCard(
                     onClick = onClickTopButton
                 )
 
-                ActionButton(
-                    actionDescription = bottomButtonText,
-                    iconImage = bottomButtonImageVector,
-                    iconDescription =  bottomButtonText,
-                    onClick = onClickBottomButton
-                )
+                if (bottomButtonText != null && bottomButtonImageVector != null)
+                    ActionButton(
+                        actionDescription = bottomButtonText,
+                        iconImage = bottomButtonImageVector,
+                        iconDescription = bottomButtonText,
+                        onClick = onClickBottomButton
+                    )
             }
         }
     }
 }
 
+@Composable
+private fun ExpandedDetails(
+    detailsList: List<String>
+) {
+    val rowHeight = 36  // estimated Row Height to prevent the infinity maximum height constraints error
+    val fullHeight = ((detailsList.size + 1) / 2) * rowHeight
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        verticalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxWidth().padding(top = 10.dp).height(fullHeight.dp)
+    ) {
+        items(detailsList) { detail ->
+            Text(
+                detail,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(
+                    start = 15.dp,
+                    bottom = 10.dp,
+                    end = 15.dp
+                )
+            )
+        }
+    }
+}
+
+/**
+ * Provides Action Buttons when the Card is expanded
+ */
 @Composable
 private fun ActionButton(
     actionDescription: String,
@@ -190,7 +229,7 @@ private fun ActionButton(
     iconDescription: String,
     onClick: () -> Unit
 ) {
-    Box (
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
@@ -198,13 +237,13 @@ private fun ActionButton(
                 color = Color.Transparent
             )
     ) {
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
             modifier = Modifier
                 .padding(10.dp)
                 .padding(start = 15.dp)
-        ){
+        ) {
             Icon(
                 imageVector = iconImage,
                 contentDescription = iconDescription,
@@ -224,7 +263,7 @@ private fun ActionButton(
 
 @Composable
 @Preview
-fun ExpendableDayCardPreview() {
+fun ExpendableCardPreview() {
     val topText = dummyDay.dayOfWeek.toString().lowercase()
         .replaceFirstChar { itDay ->
             if (itDay.isLowerCase()) itDay.titlecase(Locale.getDefault())
@@ -240,7 +279,8 @@ fun ExpendableDayCardPreview() {
             topButtonImageVector = Icons.Rounded.ChangeCircle,
             topButtonText = stringResource(id = R.string.changeWorkout),
             bottomButtonImageVector = Icons.Rounded.RemoveRedEye,
-            bottomButtonText = stringResource(id = R.string.viewWorkout)
+            bottomButtonText = stringResource(id = R.string.viewWorkout),
+            detailsList = listOf("DummyData1", "DummyData2", "DummyData3")
         )
     }
 }
