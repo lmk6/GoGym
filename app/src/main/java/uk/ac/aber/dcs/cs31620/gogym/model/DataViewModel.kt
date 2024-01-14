@@ -1,12 +1,12 @@
-package uk.ac.aber.dcs.cs31620.gogym.model.day
+package uk.ac.aber.dcs.cs31620.gogym.model
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import uk.ac.aber.dcs.cs31620.gogym.datasource.GoGymRepository
+import uk.ac.aber.dcs.cs31620.gogym.model.day.Day
 import uk.ac.aber.dcs.cs31620.gogym.model.exercise.Exercise
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
-import java.time.Duration
 
 class DataViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: GoGymRepository = GoGymRepository(application)
@@ -19,9 +19,14 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getDaysWorkout(day: Day): Workout = repository.getWorkoutNonLive(day.workoutID!!)
 
+    fun getNonLiveDayByID(dayID: Long): Day = repository.getDayByIDNonLive(dayID)
+
     fun getWorkoutExercises(workout: Workout): LiveData<List<Exercise>> =
         repository.getWorkoutExercises(workout)
 
+    /**
+     * inner lambda takes care of the durations mismatch
+     */
     fun deleteExercise(exercise: Exercise) {
 
         val allWorkouts = workouts.value
@@ -43,12 +48,46 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
         repository.deleteExercise(exercise)
     }
 
-    fun deleteWorkout(workout: Workout): Boolean {
-        val allDays = days.value
+    fun insertExercise(exercise: Exercise) = repository.insertExercise(exercise)
 
-        allDays?.let { daysList ->
+    /**
+     * inner lambda takes care of the durations mismatch
+     */
+    fun updateExercise(exercise: Exercise) {
+        val allWorkouts = workouts.value
+        val exerciseID = exercise.id
+
+        allWorkouts?.let { workoutsList ->
+            for (workout in workoutsList) {
+                if (workout.exercisesIDs.contains(exerciseID)) {
+                    workout.exercisesIDs.forEach {
+                        if (it == exerciseID) {
+                            val oldExercise = repository.getExerciseNonLive(exerciseID)
+                            oldExercise?.let {
+                                workout.totalDuration =
+                                    workout.totalDuration.minus(oldExercise.duration)
+                                        .plus(exercise.duration)
+                            }
+                        }
+                    }
+                    updateWorkout(workout)
+                }
+            }
+        }
+        repository.updateExercise(exercise)
+    }
+
+    /**
+     * inner lambda prevents the deletion of the only scheduled workout
+     */
+    fun deleteWorkout(workout: Workout): Boolean {
+        val allDays = repository.getAllDaysNonLive()
+
+        allDays.let { daysList ->
             val daysWithWorkout =
-                daysList.filter { it.workoutID != workout.id && it.workoutID != null }
+                daysList.filter {
+                    it?.let { it.workoutID != workout.id && it.workoutID != null } ?: false
+                }
 
             if (daysWithWorkout.isNotEmpty()) {
                 repository.deleteWorkout(workout)
@@ -60,14 +99,33 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateWorkout(workout: Workout) = repository.updateWorkout(workout)
 
+    fun updateDay(day: Day): Boolean {
+        if (day.workoutID == null) {
+            val allDays = repository.getAllDaysNonLive()
+            allDays.let { daysList ->
+                val daysWithWorkout =
+                    daysList.filter {
+                        it?.let { day.id != it.id && it.workoutID != null } ?: false
+                    }
+
+                if (daysWithWorkout.isEmpty()) {
+                    return false
+                }
+            }
+        }
+        repository.updateDay(day)
+        return true
+    }
+
     fun getWorkoutByID(workoutID: Long): LiveData<Workout> =
         repository.getWorkout(workoutID)
+
 
     fun getNonLiveWorkoutByID(workoutID: Long): Workout =
         repository.getWorkoutNonLive(workoutID)
 
     private fun loadDays(): LiveData<List<Day>> {
-        return repository.getDays()
+        return repository.getAllDays()
     }
 
     private fun loadWorkouts(): LiveData<List<Workout>> {

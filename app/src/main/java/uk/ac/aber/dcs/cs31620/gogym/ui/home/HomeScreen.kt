@@ -26,7 +26,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.gogym.R
-import uk.ac.aber.dcs.cs31620.gogym.model.day.DataViewModel
+import uk.ac.aber.dcs.cs31620.gogym.model.DataViewModel
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.TodayWorkoutCard
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.TopLevelScaffold

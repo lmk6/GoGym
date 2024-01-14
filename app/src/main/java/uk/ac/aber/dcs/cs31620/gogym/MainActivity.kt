@@ -16,7 +16,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import uk.ac.aber.dcs.cs31620.gogym.model.day.DataViewModel
+import uk.ac.aber.dcs.cs31620.gogym.model.DataViewModel
 import uk.ac.aber.dcs.cs31620.gogym.ui.exercises.ExercisesScreen
 import uk.ac.aber.dcs.cs31620.gogym.ui.home.HomeScreenTopLevel
 import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
@@ -57,6 +57,7 @@ fun BuildNavigationGraph(
     ) {
         composable(Screen.Home.route) { HomeScreenTopLevel(navController, dataViewModel) }
         composable(Screen.WeekPlanner.route) { WeekPlannerScreen(navController, dataViewModel) }
+        composable(Screen.Exercises.route) { ExercisesScreen(navController, dataViewModel)}
         composable("${Screen.Exercises.route}/{workoutID}") { backStackEntry ->
             ExercisesScreen(
                 navController,
@@ -72,5 +73,12 @@ fun BuildNavigationGraph(
             )
         }
         composable(Screen.Sessions.route) { WorkoutsScreen(navController, dataViewModel) }
+        composable("${Screen.Sessions.route}/{dayID}") { backStackEntry ->
+            WorkoutsScreen(
+                navController,
+                dataViewModel,
+                backStackEntry.arguments?.getString("dayID")
+            )
+        }
     }
 }

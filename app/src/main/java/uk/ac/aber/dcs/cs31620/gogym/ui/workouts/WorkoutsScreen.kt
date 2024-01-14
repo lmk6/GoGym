@@ -30,9 +30,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.gogym.R
-import uk.ac.aber.dcs.cs31620.gogym.model.day.DataViewModel
+import uk.ac.aber.dcs.cs31620.gogym.model.DataViewModel
+import uk.ac.aber.dcs.cs31620.gogym.model.day.Day
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
+import uk.ac.aber.dcs.cs31620.gogym.pathToRestDayImage
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.CustomAlertDialog
+import uk.ac.aber.dcs.cs31620.gogym.ui.components.CustomCard
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.ExpandableCard
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.SnackBar
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.TopLevelScaffold
@@ -41,13 +44,16 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
 @Composable
 fun WorkoutsScreen(
     navController: NavHostController,
-    dataViewModel: DataViewModel
+    dataViewModel: DataViewModel,
+    dayIDText: String? = null
 ) {
     val coroutineScope = rememberCoroutineScope()
 
+    val dayID = dayIDText?.toLongOrNull()
+
     val workouts by dataViewModel.workouts.observeAsState(listOf())
-    // If I remove this line, DataViewModel will not load days for a reason I cannot explain
-    val days by dataViewModel.days.observeAsState(listOf())
+    val day: Day? = dayID?.let { dataViewModel.getNonLiveDayByID(dayID) }
+
     var showConfirmationDialog by remember { mutableStateOf(false) }
     var workoutToDelete by remember { mutableStateOf<Workout?>(null) }
     var showDeletionProgressSnackBar by remember { mutableStateOf(false) }
@@ -86,6 +92,19 @@ fun WorkoutsScreen(
             val state = rememberLazyGridState()
             val context = LocalContext.current
 
+            day?.let {
+                EmptySessionCard {
+                    val updatedDay = day.copy(workoutID = null)
+                    dataViewModel.updateDay(updatedDay)
+                    navController.navigate(Screen.WeekPlanner.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            }
+
             LazyVerticalGrid(
                 columns = GridCells.Fixed(1),
                 state = state,
@@ -94,45 +113,64 @@ fun WorkoutsScreen(
                 items(workouts) {
                     val workout = it
 
-                    val setsText =
+                    val exercisesText =
                         "${workout.exercisesIDs.size} " +
-                                "Set${if (workout.exercisesIDs.size != 1) "s" else ""}"
+                                "Exercise${if (workout.exercisesIDs.size != 1) "s" else ""}"
 
                     val duration =
                         "~${workout.getFormattedDuration()}"
 
                     val cannotDeleteText = stringResource(id = R.string.cannotDeleteWorkout)
 
-                    ExpandableCard(
-                        modifier = Modifier.padding(top = 10.dp),
-                        imagePath = workout.imagePath,
-                        topText = workout.name,
-                        bottomText = setsText,
-                        extraText = duration,
-                        topButtonText = stringResource(id = R.string.editWorkout),
-                        topButtonImageVector = Icons.Filled.EditNote,
-                        bottomButtonText = stringResource(id = R.string.deleteWorkout),
-                        bottomButtonImageVector = Icons.Filled.Delete,
-                        onClickTopButton = {
-                            navController.navigate("${Screen.WorkoutView.route}/${it.id}") {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                    if (day == null)
+                        ExpandableCard(
+                            modifier = Modifier.padding(top = 10.dp),
+                            imagePath = workout.imagePath,
+                            topText = workout.name,
+                            bottomText = exercisesText,
+                            extraText = duration,
+                            topButtonText = stringResource(id = R.string.editWorkout),
+                            topButtonImageVector = Icons.Filled.EditNote,
+                            bottomButtonText = stringResource(id = R.string.deleteWorkout),
+                            bottomButtonImageVector = Icons.Filled.Delete,
+                            onClickTopButton = {
+                                navController.navigate("${Screen.WorkoutView.route}/${it.id}") {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
                                 }
-                                launchSingleTop = true
+                            },
+                            onClickBottomButton = {
+                                if (workouts.size > 1) {
+                                    workoutToDelete = workout
+                                    showConfirmationDialog = true
+                                } else
+                                    Toast.makeText(
+                                        context,
+                                        cannotDeleteText,
+                                        Toast.LENGTH_LONG
+                                    ).show()
                             }
-                        },
-                        onClickBottomButton = {
-                            if (workouts.size > 1) {
-                                workoutToDelete = workout
-                                showConfirmationDialog = true
-                            } else
-                                Toast.makeText(
-                                    context,
-                                    cannotDeleteText,
-                                    Toast.LENGTH_LONG
-                                ).show()
-                        }
-                    )
+                        )
+                    else
+                        CustomCard(
+                            modifier = Modifier.padding(top = 10.dp),
+                            imagePath = workout.imagePath,
+                            topText = workout.name,
+                            bottomText = exercisesText,
+                            extraText = duration,
+                            clickAction = {
+                                val updatedDay = day.copy(workoutID = workout.id)
+                                dataViewModel.updateDay(updatedDay)
+                                navController.navigate(Screen.WeekPlanner.route) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                }
+                            }
+                        )
                 }
             }
         }
@@ -165,4 +203,18 @@ fun WorkoutsScreen(
             showDeletionProgressSnackBar = false
         }
     }
+}
+
+@Composable
+private fun EmptySessionCard(clickAction: () -> Unit) {
+    CustomCard(
+        modifier = Modifier.padding(
+            top = 10.dp,
+            start = 10.dp,
+            end = 10.dp
+        ),
+        imagePath = pathToRestDayImage,
+        topText = stringResource(R.string.restDay),
+        bottomText = stringResource(R.string.noSession),
+        clickAction = { clickAction() })
 }

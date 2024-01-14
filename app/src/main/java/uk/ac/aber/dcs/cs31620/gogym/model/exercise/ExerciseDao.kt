@@ -29,10 +29,13 @@ interface ExerciseDao {
     fun getAllExercises(): LiveData<List<Exercise>>
 
     @Query("""SELECT * FROM exercises WHERE id = :id LIMIT 1""")
-    fun getExerciseWithID(id: Long): LiveData<Exercise>
+    fun getExerciseByID(id: Long): LiveData<Exercise>
+
+    @Query("""SELECT * FROM exercises WHERE id = :id LIMIT 1""")
+    fun getNonLiveExerciseByID(id: Long): Exercise?
 
     @Query("""SELECT * FROM exercises WHERE id IN (:ids)""")
-    fun getExercisesWithIDs(ids: List<Long>): LiveData<List<Exercise>>
+    fun getExercisesByIDs(ids: List<Long>): LiveData<List<Exercise>>
 
     @Query("""SELECT * FROM exercises WHERE name = :name LIMIT 1""")
     fun getExerciseWithName(name: String): LiveData<Exercise>

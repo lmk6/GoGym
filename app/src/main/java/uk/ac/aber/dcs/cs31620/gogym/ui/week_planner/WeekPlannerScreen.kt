@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.rounded.ChangeCircle
 import androidx.compose.material.icons.rounded.RemoveRedEye
 import androidx.compose.runtime.Composable
@@ -19,12 +18,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.gogym.R
-import uk.ac.aber.dcs.cs31620.gogym.model.day.DataViewModel
+import uk.ac.aber.dcs.cs31620.gogym.model.DataViewModel
 import uk.ac.aber.dcs.cs31620.gogym.pathToRestDayImage
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.ExpandableCard
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.TopLevelScaffold
+import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
 import java.util.Locale
 
 @Composable
@@ -72,8 +73,26 @@ fun WeekPlannerScreen(
                         bottomText = workoutName,
                         topButtonImageVector = Icons.Rounded.ChangeCircle,
                         topButtonText = stringResource(id = R.string.changeWorkout),
+                        onClickTopButton = {
+                            navController.navigate("${Screen.Sessions.route}/${day.id}") {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                            }
+                        },
                         bottomButtonImageVector = Icons.Rounded.RemoveRedEye,
-                        bottomButtonText = stringResource(id = R.string.viewWorkout)
+                        bottomButtonText = stringResource(id = R.string.viewWorkout),
+                        onClickBottomButton = {
+                            it.workoutID?.let { id ->
+                                navController.navigate("${Screen.WorkoutView.route}/${id}") {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                }
+                            }
+                        }
                     )
                 }
             }

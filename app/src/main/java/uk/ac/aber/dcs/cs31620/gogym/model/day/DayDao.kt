@@ -31,6 +31,12 @@ interface DayDao {
     @Query("SELECT * FROM days")
     fun getAllDays(): LiveData<List<Day>>
 
+    @Query("SELECT * FROM days")
+    fun getNonLiveAllDays(): List<Day?>
+
     @Query("SELECT workouts.* FROM workouts INNER JOIN days ON days.workout_id = workouts.id WHERE days.dayOfWeek = :today")
     fun getWorkoutForToday(today: DayOfWeek): LiveData<Workout?>
+
+    @Query("SELECT * FROM days WHERE id = :dayID LIMIT 1")
+    fun getNonLiveDayByID(dayID: Long): Day
 }

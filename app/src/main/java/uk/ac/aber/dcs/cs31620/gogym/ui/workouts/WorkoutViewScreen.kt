@@ -21,7 +21,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -29,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.gogym.R
-import uk.ac.aber.dcs.cs31620.gogym.model.day.DataViewModel
+import uk.ac.aber.dcs.cs31620.gogym.model.DataViewModel
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.ExpandableCard
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.SnackBar
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.TopLevelScaffold
@@ -52,6 +55,7 @@ fun WorkoutViewScreen(
                 exercise.id == id
             }
         }
+        var showChangeDialog by remember { mutableStateOf(false) }
 
         TopLevelScaffold(
             navController = navController,
@@ -85,7 +89,9 @@ fun WorkoutViewScreen(
                 )
             },
             topAppBarActionContent = {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                    showChangeDialog = true
+                }) {
                     Icon(
                         imageVector = Icons.Filled.EditNote,
                         contentDescription = stringResource(id = R.string.editWorkout),
@@ -128,6 +134,9 @@ fun WorkoutViewScreen(
                             extraText = duration,
                             topButtonText = stringResource(id = R.string.editExercise),
                             topButtonImageVector = Icons.Filled.EditNote,
+                            onClickTopButton = {
+
+                            },
                             bottomButtonText = stringResource(id = R.string.removeFromList),
                             bottomButtonImageVector = Icons.Filled.Delete,
                             onClickBottomButton = {
@@ -160,6 +169,16 @@ fun WorkoutViewScreen(
                         )
                     }
                 }
+            }
+            if (showChangeDialog) {
+                WorkoutDialog(
+                    workout,
+                    onDismiss = { showChangeDialog = false },
+                    onConfirm = {
+                        if (workout.exercisesIDs.isNotEmpty())
+                            dataViewModel.updateWorkout(it)
+                    }
+                )
             }
         }
     }

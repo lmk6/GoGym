@@ -46,4 +46,9 @@
     <string name="weight">Weight</string>
     <string name="kilograms">kilograms</string>
     <string name="dropSet">Drop Sets</string>
+    <string name="afterFirstDrop">Weight after 1st drop</string>
+    <string name="afterSecondDrop">Weight after 2nd drop</string>
+    <string name="restDay">Rest Day</string>
+    <string name="minimumOneWorkout">There must be at least one Workout Scheduled!</string>
+    <string name="createWorkout">Create New Workout</string>
 </resources>
