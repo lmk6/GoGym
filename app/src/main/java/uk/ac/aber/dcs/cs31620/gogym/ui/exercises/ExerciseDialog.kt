@@ -525,7 +525,7 @@ private fun getUpdatedExercise(
             weightOne = weightOne,
             weightTwo = weightTwo,
             weightThree = weightThree,
-            dropSetsFeature = dropSetsEnabled,
+            dropSetsFeatureEnabled = dropSetsEnabled,
             imagePath = imagePath
         )
     }
@@ -538,7 +538,7 @@ private fun getUpdatedExercise(
         weightOne = weightOne,
         weightTwo = weightTwo,
         weightThree = weightThree,
-        dropSetsFeature = dropSetsEnabled,
+        dropSetsFeatureEnabled = dropSetsEnabled,
         imagePath = imagePath
     )
 }

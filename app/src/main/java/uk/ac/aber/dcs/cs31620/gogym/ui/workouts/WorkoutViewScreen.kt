@@ -112,7 +112,9 @@ fun WorkoutViewScreen(
             },
             navigationBarTopButton = {
                 StartButton {
-
+                    navController.navigate("${Screen.SessionRun}/${workout.id}") {
+                        launchSingleTop = true
+                    }
                 }
             }
         ) { innerPadding ->
@@ -133,7 +135,7 @@ fun WorkoutViewScreen(
 
                         val setsText =
                             "${exercise.numOfSets} " +
-                                    if (exercise.dropSetsFeature) " Drop" else "" +
+                                    if (exercise.dropSetsFeatureEnabled) " Drop" else "" +
                                             "Set" + if (exercise.numOfSets != 1) "s" else ""
 
                         val duration =
@@ -199,12 +201,12 @@ fun WorkoutViewScreen(
 private fun getExerciseDetails(exercise: Exercise): List<String> {
     val weightText = if (exercise.weightEnabled) "Weight: ${exercise.weightOne}"
     else "No Weight"
-    val repsText = if (exercise.dropSetsFeature) "" else {
+    val repsText = if (exercise.dropSetsFeatureEnabled) "" else {
         "${exercise.repsPerSet} Reps"
     }
     return listOf(
         "~${exercise.getFormattedDuration()}",
-        "${exercise.numOfSets} " + if (exercise.dropSetsFeature) "Drop Set" else {
+        "${exercise.numOfSets} " + if (exercise.dropSetsFeatureEnabled) "Drop Set" else {
             "Set"
         } + if (exercise.numOfSets > 1) "s" else "",
         weightText,

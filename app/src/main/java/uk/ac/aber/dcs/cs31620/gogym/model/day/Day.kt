@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
+import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutStatus
 
 @Entity(tableName = "days",
     foreignKeys = [
@@ -23,6 +24,6 @@ data class Day(
     var dayOfWeek: DayOfWeek,
     @ColumnInfo(name = "workout_id")
     var workoutID: Long? = null,
-//    @ColumnInfo(name = "workout_status")
-//    var workoutStatus: WorkoutStatus
+    @ColumnInfo(name = "workout_status")
+    var workoutStatus: WorkoutStatus = WorkoutStatus.TODAY
 )

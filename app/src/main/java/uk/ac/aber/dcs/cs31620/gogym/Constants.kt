@@ -15,3 +15,4 @@ const val pathToDefaultIcon = "${pathToAssetImages}default_icon.png"
 
 val defaultRoundedCornerShape = RoundedCornerShape(20.dp)
 const val MAX_NAME_LENGTH = 20
+const val NUM_OF_DROP_MINI_SETS = 3

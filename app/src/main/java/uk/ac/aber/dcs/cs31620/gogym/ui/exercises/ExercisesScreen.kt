@@ -28,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.gogym.R
 import uk.ac.aber.dcs.cs31620.gogym.model.DataViewModel
@@ -108,7 +107,7 @@ fun ExercisesScreen(
                     val exercise = it
 
                     val setsText =
-                        "${exercise.numOfSets} " + if (exercise.dropSetsFeature) "Drop" else "" +
+                        "${exercise.numOfSets} " + if (exercise.dropSetsFeatureEnabled) "Drop" else "" +
                                 "Set" + if (exercise.numOfSets != 1) "s" else ""
 
                     val duration =

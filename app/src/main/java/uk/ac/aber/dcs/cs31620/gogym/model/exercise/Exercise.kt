@@ -24,7 +24,7 @@ data class Exercise(
     @ColumnInfo(name = "weight_three")
     var weightThree: Float = 0f,
     @ColumnInfo(name = "drop_sets_feature")
-    var dropSetsFeature: Boolean = false,
+    var dropSetsFeatureEnabled: Boolean = false,
     @ColumnInfo(name = "image_path")
     var imagePath: String = ""
 ) {

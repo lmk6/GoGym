@@ -53,4 +53,13 @@
     <string name="createWorkout">Create New Workout</string>
     <string name="selectExercise">Select the Exercise</string>
     <string name="exerciseImage">Image of an Exercise</string>
+    <string name="asManyReps">As many reps as you can!</string>
+    <string name="approxTime">Approx. Time</string>
+    <string name="noWeight">No Weight</string>
+    <string name="next">Next</string>
+    <string name="finish">Finish</string>
+    <string name="nextExercise">Next Exercise</string>
+    <string name="longBreak">3 minutes Break!</string>
+    <string name="shortBreak">10 seconds Break!</string>
+    <string name="failure">Failure</string>
 </resources>

@@ -27,8 +27,7 @@ import java.time.Duration
 
 @Database(entities = [Day::class, Workout::class, Exercise::class], version = 1)
 @TypeConverters(
-    StatusConverter::class, ExercisesIDsListConverter::class, WorkoutConverter::class,
-    LocalDateConverter::class, DurationConverter::class
+    StatusConverter::class, ExercisesIDsListConverter::class, DurationConverter::class
 )
 abstract class GoGymRoomDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao
