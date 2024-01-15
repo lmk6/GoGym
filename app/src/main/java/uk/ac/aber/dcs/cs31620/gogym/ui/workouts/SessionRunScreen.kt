@@ -206,7 +206,12 @@ private fun SessionRunScreen(
                     if (isBreak) {
                         isBreak = false
                         buttonStringResource =
-                            if (currentSet == currentExercise.numOfSets) R.string.nextExercise
+                            if (currentSet == currentExercise.numOfSets) {
+                                if (currentMiniSet == NUM_OF_DROP_MINI_SETS) {
+                                    if (currentExerciseIndex == exercises.size - 1) R.string.finish
+                                    else R.string.nextExercise
+                                } else R.string.next
+                            }
                             else R.string.failure
                     } else if (currentExercise.dropSetsFeatureEnabled
                         && !(currentMiniSet == NUM_OF_DROP_MINI_SETS
@@ -239,8 +244,10 @@ private fun SessionRunScreen(
                         }
                     } else {
                         buttonStringResource =
-                            if (currentSet == currentExercise.numOfSets - 1) R.string.nextExercise
-                            else R.string.next
+                            if (currentSet == currentExercise.numOfSets - 1) {
+                                if (currentExerciseIndex == exercises.size - 1) R.string.finish
+                                else R.string.nextExercise
+                            } else R.string.next
                         currentSet++
                     }
                 }
@@ -248,6 +255,7 @@ private fun SessionRunScreen(
         }
     }
 }
+
 private fun navigateBackToHome(
     navController: NavHostController
 ) {
@@ -329,7 +337,7 @@ private fun ExerciseSetInfo(
         ) {
             Text(
                 text = buttonText.uppercase(Locale.getDefault()),
-                fontSize = 35.sp,
+                fontSize = 30.sp,
                 textAlign = TextAlign.Center
             )
         }
