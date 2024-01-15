@@ -49,6 +49,13 @@ import uk.ac.aber.dcs.cs31620.gogym.pathToDefaultIcon
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.utils.dummyWorkout
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 
+/**
+ * Allows Edition and Creation of a workout
+ * @param workout if is not null, edition mode is on
+ * otherwise, the creation starts
+ * @param onConfirm on dismiss function.
+ * @param onDismiss provides a new or an edited workout on confirmation.
+ */
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun WorkoutDialog(

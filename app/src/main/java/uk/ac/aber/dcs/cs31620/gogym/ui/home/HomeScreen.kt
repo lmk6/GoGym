@@ -26,6 +26,9 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 
+/**
+ * Top Level of the Screen
+ */
 @Composable
 fun HomeScreenTopLevel(
     navController: NavHostController,
@@ -41,6 +44,13 @@ fun HomeScreenTopLevel(
     )
 }
 
+/**
+ * Home Screen
+ * Lists all the workouts
+ * Contains a Today's Session card
+ * @param workoutsList list of all the workouts
+ * @param todayWorkout workout scheduled for today
+ */
 @Composable
 fun HomeScreen(
     navController: NavHostController,

@@ -3,6 +3,10 @@ package uk.ac.aber.dcs.cs31620.gogym
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.unit.dp
 
+/**
+ * Few constant values used across the project
+ */
+
 const val pathToAssetImages = "file:///android_asset/images/"
 const val defaultRestDayImageName = "eirik_uhlen_rest_day.jpg"
 const val defaultPushUpsImageName = "push_ups_img.jpg"

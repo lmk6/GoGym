@@ -1,5 +1,9 @@
 package uk.ac.aber.dcs.cs31620.gogym.ui.navigation
 
+/**
+ * Contents of this file helps with navigation
+ * Idea of Chris Loftus
+ */
 sealed class Screen (val route: String) {
     data object Home : Screen("home")
     data object WeekPlanner : Screen("weekPlanner")

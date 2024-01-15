@@ -40,6 +40,13 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.components.SnackBar
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
 
+/**
+ * Has two modes, if workout ID is valid, the selection of an exercises for the workout.
+ * If not, Lists Exercises.
+ * Allows to edit, view and delete each one of them.
+ * FAB allows the creation of a new Exercise.
+ * @param workoutIDText if null, enables the creation, otherwise, the edition of a workout.
+ */
 @Composable
 fun ExercisesScreen(
     navController: NavHostController,
@@ -206,6 +213,7 @@ fun ExercisesScreen(
     }
 
     // Makes sure that the newly created Workout has at least one exercise
+    // If not, it gets automatically deleted
     DisposableEffect(Unit) {
         onDispose {
             workout?.let {

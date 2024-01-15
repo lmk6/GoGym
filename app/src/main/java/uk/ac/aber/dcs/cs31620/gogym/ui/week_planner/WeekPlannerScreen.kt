@@ -18,7 +18,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.gogym.R
 import uk.ac.aber.dcs.cs31620.gogym.model.DataViewModel
@@ -28,6 +27,10 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
 import java.util.Locale
 
+/**
+ * Lists days of the week
+ * Allows for rescheduling and view of sessions
+ */
 @Composable
 fun WeekPlannerScreen(
     navController: NavHostController,
@@ -94,12 +97,3 @@ fun WeekPlannerScreen(
     }
 
 }
-
-//@Composable
-//@Preview
-//fun WeekPlannerPreview() {
-//    val navController = rememberNavController()
-//    GoGymTheme {
-//        WeekPlanner(navController = navController, dataViewModel = )
-//    }
-//}

@@ -55,8 +55,15 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.components.utils.dummyExercise
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 import java.time.Duration
 
+/**
+ * Supports both, creation and edition of an existing exercise.
+ * One dialog to fit all the details.
+ * @param exercise if not null, enables edition, otherwise creation.
+ * @param onConfirm on dismiss function.
+ * @param onDismiss provides a new or an edited exercise on confirmation.
+ */
+
 @Suppress("Since15")
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ExerciseDialog(
     exercise: Exercise? = null,
@@ -140,15 +147,15 @@ fun ExerciseDialog(
                         "%02.1f".format(exercise?.weightOne ?: 0f)
                     )
                 }
-                var dropSetsEnabled by remember { mutableStateOf(exercise?.weightEnabled ?: false) }
+                var dropSetsEnabled by remember { mutableStateOf(exercise?.dropSetsFeatureEnabled ?: false) }
                 var secondWeightText by remember {
                     mutableStateOf(
-                        "%02.1f".format(exercise?.weightOne ?: 0f)
+                        "%02.1f".format(exercise?.weightTwo ?: 0f)
                     )
                 }
                 var thirdWeightText by remember {
                     mutableStateOf(
-                        "%02.1f".format(exercise?.weightOne ?: 0f)
+                        "%02.1f".format(exercise?.weightThree ?: 0f)
                     )
                 }
 
@@ -182,93 +189,29 @@ fun ExerciseDialog(
                     horizontalArrangement = Arrangement.SpaceAround,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .width(100.dp)
-                            .aspectRatio(1f)
-                            .clip(shape = defaultRoundedCornerShape)
-                            .clickable {
-                                imagePicker.launch(
-                                    PickVisualMediaRequest(
-                                        mediaType = ActivityResultContracts
-                                            .PickVisualMedia.ImageOnly
-                                    )
-                                )
-                            },
-                    ) {
-                        GlideImage(
-                            model = imageUri,
-                            contentDescription = stringResource(R.string.pickedImage),
-                            contentScale = ContentScale.Crop,
-                            colorFilter = ColorFilter.tint(
-                                color = Color.Gray,
-                                blendMode = BlendMode.Darken
-                            ),
-                            modifier = Modifier
-                                .fillMaxSize()
-                        )
-
-                        Text(
-                            text = stringResource(R.string.changeImage),
-                            textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            modifier = Modifier
-                                .align(Alignment.Center)
+                    SelectImageBox(imageUri = imageUri) {
+                        imagePicker.launch(
+                            PickVisualMediaRequest(
+                                mediaType = ActivityResultContracts
+                                    .PickVisualMedia.ImageOnly
+                            )
                         )
                     }
-
-                    OutlinedTextField(
-                        value = numOfSetsText,
+                    NumOfXOutlinedTextField(
+                        textValue = numOfSetsText,
+                        fieldEnabled = dropSetsEnabled,
+                        itemDescription = stringResource(R.string.sets),
                         onValueChange = {
-                            if (it.length < 3 && it.isNotBlank())
-                                numOfSetsText = when (it.toIntOrNull()) {
-                                    in 0..99 -> it
-                                    else -> numOfSetsText
-                                }
-                        },
-                        maxLines = 1,
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number,
-                            capitalization = KeyboardCapitalization.None
-                        ),
-                        label = { Text(stringResource(R.string.sets)) },
-                        supportingText = {
-                            Text(
-                                text = "max 99",
-                                modifier = Modifier.fillMaxWidth(),
-                                fontSize = 10.sp
-                            )
-                        },
-                        enabled = !dropSetsEnabled,
-                        textStyle = TextStyle(textAlign = TextAlign.Center),
-                        modifier = Modifier.width(75.dp),
+                            numOfSetsText = it
+                        }
                     )
-                    OutlinedTextField(
-                        value = numOfRepsText,
+                    NumOfXOutlinedTextField(
+                        textValue = numOfRepsText,
+                        fieldEnabled = dropSetsEnabled,
+                        itemDescription = stringResource(R.string.reps),
                         onValueChange = {
-                            if (it.length < 3 && it.isNotBlank())
-                                numOfRepsText = when (it.toIntOrNull()) {
-                                    in 0..99 -> it
-                                    else -> numOfRepsText
-                                }
-                        },
-                        maxLines = 1,
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number,
-                            capitalization = KeyboardCapitalization.None
-                        ),
-                        label = { Text(stringResource(R.string.reps)) },
-                        supportingText = {
-                            Text(
-                                text = "max 99",
-                                modifier = Modifier.fillMaxWidth(),
-                                fontSize = 10.sp
-                            )
-                        },
-                        enabled = !dropSetsEnabled,
-                        textStyle = TextStyle(textAlign = TextAlign.Center),
-                        modifier = Modifier.width(75.dp),
+                            numOfRepsText = it
+                        }
                     )
                 }
 
@@ -280,59 +223,26 @@ fun ExerciseDialog(
                     horizontalArrangement = Arrangement.SpaceAround,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    OutlinedTextField(
-                        value = hoursText,
+                    TimeOutlinedTextField(
+                        timeUnitValueText = hoursText,
+                        timeUnitText = stringResource(R.string.hours),
                         onValueChange = {
-                            if (it.length < 3 && it.isNotBlank())
-                                hoursText = when (it.toIntOrNull()) {
-                                    in 0..59 -> it
-                                    else -> hoursText
-                                }
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number,
-                            capitalization = KeyboardCapitalization.None
-                        ),
-                        maxLines = 1,
-                        label = { Text(stringResource(R.string.hours)) },
-                        textStyle = TextStyle(textAlign = TextAlign.Center),
-                        modifier = Modifier.width(70.dp),
+                            hoursText = it
+                        }
                     )
-                    OutlinedTextField(
-                        value = minutesText,
+                    TimeOutlinedTextField(
+                        timeUnitValueText = minutesText,
+                        timeUnitText = stringResource(R.string.minutes),
                         onValueChange = {
-                            if (it.length < 3 && it.isNotBlank())
-                                minutesText = when (it.toIntOrNull()) {
-                                    in 0..59 -> it
-                                    else -> minutesText
-                                }
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number,
-                            capitalization = KeyboardCapitalization.None
-                        ),
-                        maxLines = 1,
-                        label = { Text(stringResource(R.string.minutes)) },
-                        textStyle = TextStyle(textAlign = TextAlign.Center),
-                        modifier = Modifier.width(70.dp),
+                            minutesText = it
+                        }
                     )
-                    OutlinedTextField(
-                        value = secondsText,
+                    TimeOutlinedTextField(
+                        timeUnitValueText = secondsText,
+                        timeUnitText = stringResource(R.string.seconds),
                         onValueChange = {
-                            if (it.length < 3 && it.isNotBlank())
-                                secondsText = when (it.toIntOrNull()) {
-                                    in 0..59 -> it
-                                    else -> secondsText
-                                }
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number,
-                            capitalization = KeyboardCapitalization.None
-                        ),
-                        maxLines = 1,
-                        label = { Text(stringResource(R.string.seconds)) },
-                        textStyle = TextStyle(textAlign = TextAlign.Center),
-                        modifier = Modifier.width(70.dp),
+                            secondsText = it
+                        }
                     )
                 }
                 Row(
@@ -355,25 +265,12 @@ fun ExerciseDialog(
                         modifier = Modifier.padding(end = 10.dp)
                     )
                     if (weightEnabled)
-                        OutlinedTextField(
-                            value = weightText,
+                        WeightOutlinedTextField(
+                            weightValue = weightText,
                             onValueChange = {
-                                if (it.isNotBlank() && it.length < 6)
-                                    weightText = when (it.toFloatOrNull()) {
-                                        null -> weightText
-                                        else -> it
-                                    }
-                            },
-                            maxLines = 1,
-                            label = { Text(stringResource(R.string.kilograms)) },
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Decimal,
-                                capitalization = KeyboardCapitalization.None
-                            ),
-                            textStyle = TextStyle(textAlign = TextAlign.Center),
-                            modifier = Modifier.width(100.dp)
+                                weightText = it
+                            }
                         )
-
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -406,29 +303,13 @@ fun ExerciseDialog(
                         .padding(top = 10.dp)
                 ) {
                     if (dropSetsEnabled) {
-                        OutlinedTextField(
-                            value = secondWeightText,
+                        WeightOutlinedTextField(
+                            weightValue = secondWeightText,
+                            description = stringResource(id = R.string.afterFirstDrop),
                             onValueChange = {
-                                if (it.isNotBlank() && it.length < 6)
-                                    secondWeightText = when (it.toFloatOrNull()) {
-                                        null -> secondWeightText
-                                        else -> it
-                                    }
-                            },
-                            maxLines = 1,
-                            label = { Text(stringResource(R.string.kilograms)) },
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Decimal,
-                                capitalization = KeyboardCapitalization.None
-                            ),
-                            textStyle = TextStyle(textAlign = TextAlign.Center),
-                            modifier = Modifier.width(100.dp)
+                                secondWeightText = it
+                            }
                         )
-                        Text(
-                            text = stringResource(id = R.string.afterFirstDrop),
-                            modifier = Modifier.padding(start = 10.dp)
-                        )
-
                     }
                 }
                 Row(
@@ -439,29 +320,13 @@ fun ExerciseDialog(
                         .padding(top = 10.dp)
                 ) {
                     if (dropSetsEnabled) {
-                        OutlinedTextField(
-                            value = thirdWeightText,
+                        WeightOutlinedTextField(
+                            weightValue = thirdWeightText,
+                            description = stringResource(id = R.string.afterSecondDrop),
                             onValueChange = {
-                                if (it.isNotBlank() && it.length < 6)
-                                    thirdWeightText = when (it.toFloatOrNull()) {
-                                        null -> thirdWeightText
-                                        else -> it
-                                    }
-                            },
-                            maxLines = 1,
-                            label = { Text(stringResource(R.string.kilograms)) },
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Decimal,
-                                capitalization = KeyboardCapitalization.None
-                            ),
-                            textStyle = TextStyle(textAlign = TextAlign.Center),
-                            modifier = Modifier.width(100.dp)
+                                thirdWeightText = it
+                            }
                         )
-                        Text(
-                            text = stringResource(id = R.string.afterSecondDrop),
-                            modifier = Modifier.padding(start = 10.dp)
-                        )
-
                     }
                 }
                 Row(
@@ -502,6 +367,11 @@ fun ExerciseDialog(
     }
 }
 
+/**
+ * Helper Composable Functions
+ * Made to tidy up the composable function
+ */
+
 private fun getUpdatedExercise(
     exercise: Exercise? = null,
     name: String,
@@ -541,6 +411,146 @@ private fun getUpdatedExercise(
         dropSetsFeatureEnabled = dropSetsEnabled,
         imagePath = imagePath
     )
+}
+
+@Composable
+private fun NumOfXOutlinedTextField(
+    textValue: String,
+    fieldEnabled: Boolean,
+    itemDescription: String,
+    onValueChange: (String) -> Unit
+) {
+    var newTextValue = textValue
+    OutlinedTextField(
+        value = newTextValue,
+        onValueChange = {
+            if (it.length < 3 && it.isNotBlank()) {
+                newTextValue = when (it.toIntOrNull()) {
+                    in 0..99 -> it
+                    else -> newTextValue
+                }
+                onValueChange(newTextValue)
+            }
+        },
+        maxLines = 1,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            capitalization = KeyboardCapitalization.None
+        ),
+        label = { Text(itemDescription) },
+        supportingText = {
+            Text(
+                text = "max 99",
+                modifier = Modifier.fillMaxWidth(),
+                fontSize = 10.sp
+            )
+        },
+        enabled = !fieldEnabled,
+        textStyle = TextStyle(textAlign = TextAlign.Center),
+        modifier = Modifier.width(75.dp),
+    )
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+private fun SelectImageBox(
+    imageUri: Uri?,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .width(100.dp)
+            .aspectRatio(1f)
+            .clip(shape = defaultRoundedCornerShape)
+            .clickable {
+                onClick()
+            },
+    ) {
+        GlideImage(
+            model = imageUri,
+            contentDescription = stringResource(R.string.pickedImage),
+            contentScale = ContentScale.Crop,
+            colorFilter = ColorFilter.tint(
+                color = Color.Gray,
+                blendMode = BlendMode.Darken
+            ),
+            modifier = Modifier
+                .fillMaxSize()
+        )
+
+        Text(
+            text = stringResource(R.string.changeImage),
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            modifier = Modifier
+                .align(Alignment.Center)
+        )
+    }
+}
+
+@Composable
+private fun TimeOutlinedTextField(
+    timeUnitValueText: String,
+    timeUnitText: String,
+    onValueChange: (String) -> Unit
+) {
+    var timeUnitString = timeUnitValueText
+    OutlinedTextField(
+        value = timeUnitString,
+        onValueChange = {
+            if (it.length < 3 && it.isNotBlank()) {
+                timeUnitString = when (it.toIntOrNull()) {
+                    in 0..59 -> it
+                    else -> timeUnitString
+                }
+                onValueChange(timeUnitString)
+            }
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            capitalization = KeyboardCapitalization.None
+        ),
+        maxLines = 1,
+        label = { Text(timeUnitText) },
+        textStyle = TextStyle(textAlign = TextAlign.Center),
+        modifier = Modifier.width(70.dp),
+    )
+}
+
+@Composable
+private fun WeightOutlinedTextField(
+    weightValue: String,
+    description: String? = null,
+    onValueChange: (String) -> Unit
+) {
+    var newWeightValue = weightValue
+    OutlinedTextField(
+        value = newWeightValue,
+        onValueChange = {
+            if (it.isNotBlank() && it.length < 6) {
+                newWeightValue = when (it.toFloatOrNull()) {
+                    null -> newWeightValue
+                    else -> it
+                }
+                onValueChange(newWeightValue)
+            }
+        },
+        maxLines = 1,
+        label = { Text(stringResource(R.string.kilograms)) },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Decimal,
+            capitalization = KeyboardCapitalization.None
+        ),
+        textStyle = TextStyle(textAlign = TextAlign.Center),
+        modifier = Modifier.width(100.dp)
+    )
+    description?.let {
+        Text(
+            text = description,
+            modifier = Modifier.padding(start = 10.dp)
+        )
+    }
 }
 
 @Preview

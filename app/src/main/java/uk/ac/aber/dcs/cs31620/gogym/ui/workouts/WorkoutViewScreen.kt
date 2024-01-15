@@ -52,6 +52,12 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.components.SnackBar
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
 
+/**
+ * Shows a single workout, allowing to edit the list of exercises.
+ * Also allows to edit the workout
+ * @param workoutIDText parsed through navigation
+ */
+
 @Composable
 fun WorkoutViewScreen(
     navController: NavHostController,
@@ -214,6 +220,9 @@ private fun getExerciseDetails(exercise: Exercise): List<String> {
     )
 }
 
+/**
+ * Button to be attached at the top of the Navigation Bar
+ */
 @Composable
 private fun StartSessionButton(
     onClick: () -> Unit

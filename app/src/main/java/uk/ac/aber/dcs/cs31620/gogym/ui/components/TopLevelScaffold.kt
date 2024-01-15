@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
  * @param navController To pass through the NavHostController since navigation is required
  * @param pageContent So that callers can plug in their own page content.
  * By default an empty lambda.
- * @author Chris Loftus
+ * @author mainly Chris Loftus, I changed only a few bits to fit my project
  */
 
 @Composable

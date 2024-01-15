@@ -57,7 +57,8 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 import java.util.Locale
 
 /**
- * Top Level Of the Screen
+ * Top Level Of the Screen.
+ * @param workout - the session to be run.
  */
 @Composable
 fun SessionRunTopLevelScreen(
@@ -199,6 +200,9 @@ private fun SessionRunScreen(
                     buttonText = stringResource(buttonStringResource),
                     isBreak = isBreak
                 ) {
+                    /**
+                     * logic behind the session go-through
+                     */
                     if (isBreak) {
                         isBreak = false
                         buttonStringResource =
@@ -244,7 +248,6 @@ private fun SessionRunScreen(
         }
     }
 }
-
 private fun navigateBackToHome(
     navController: NavHostController
 ) {

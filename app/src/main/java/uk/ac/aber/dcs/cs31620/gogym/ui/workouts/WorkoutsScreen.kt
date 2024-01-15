@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.gogym.R
 import uk.ac.aber.dcs.cs31620.gogym.model.DataViewModel
@@ -41,6 +40,11 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.components.SnackBar
 import uk.ac.aber.dcs.cs31620.gogym.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.gogym.ui.navigation.Screen
 
+/**
+ * Displays workouts for view and selection
+ * @param dayIDText if provides a valid id, it will display workouts for selections
+ * otherwise, it will display workouts for view and delete purposes
+ */
 @Composable
 fun WorkoutsScreen(
     navController: NavHostController,
@@ -171,6 +175,9 @@ fun WorkoutsScreen(
                 }
             }
         }
+        /**
+         * Dialogs and SnackBars section
+         */
 
         if (showConfirmationDialog) {
             CustomAlertDialog(
@@ -217,12 +224,16 @@ fun WorkoutsScreen(
     }
 }
 
+/**
+ * Selecting it will schedule a rest day
+ */
 @Composable
 private fun EmptySessionCard(clickAction: () -> Unit) {
     CustomCard(
         modifier = Modifier.padding(
             top = 10.dp,
             start = 10.dp,
+            end = 10.dp
         ),
         imagePath = pathToRestDayImage,
         topText = stringResource(R.string.restDay),
