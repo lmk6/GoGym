@@ -217,8 +217,11 @@ fun ExercisesScreen(
     DisposableEffect(Unit) {
         onDispose {
             workout?.let {
-                if (workout.exercisesIDs.isEmpty())
-                    dataViewModel.deleteWorkout(workout)
+                val onExitWorkout = dataViewModel.getNonLiveWorkoutByID(workout.id)
+                onExitWorkout?.let {
+                    if (onExitWorkout.exercisesIDs.isEmpty())
+                        dataViewModel.deleteWorkout(onExitWorkout)
+                }
             }
         }
     }
