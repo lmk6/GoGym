@@ -62,4 +62,5 @@
     <string name="longBreak">3 min Break!</string>
     <string name="shortBreak">10 sec Break!</string>
     <string name="failure">Failure</string>
+    <string name="onlyExerciseOfWorkout">Cannot delete the only exercise present on a workout</string>
 </resources>

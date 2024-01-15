@@ -65,6 +65,7 @@ fun ExercisesScreen(
 
     var exerciseToChange by remember { mutableStateOf<Exercise?>(null) }
     var showSuccessSnackBar by remember { mutableStateOf(false) }
+    var showFailureSnackBar by remember { mutableStateOf(false)    }
 
 
     TopLevelScaffold(
@@ -182,9 +183,9 @@ fun ExercisesScreen(
                     showConfirmationDialog = false
                 },
                 onConfirm = {
-                    dataViewModel.deleteExercise(exerciseToChange!!)
                     showConfirmationDialog = false
-                    showSuccessSnackBar = true
+                    showSuccessSnackBar = dataViewModel.deleteExercise(exerciseToChange!!)
+                    showFailureSnackBar = !showSuccessSnackBar
                     exerciseToChange = null
                 }
             )
@@ -196,6 +197,14 @@ fun ExercisesScreen(
                 Toast.LENGTH_LONG
             ).show()
             showSuccessSnackBar = false
+        }
+        if (showFailureSnackBar) {
+            Toast.makeText(
+                LocalContext.current,
+                stringResource(id = R.string.onlyExerciseOfWorkout),
+                Toast.LENGTH_LONG
+            ).show()
+            showFailureSnackBar = false
         }
         if (showChangeDialog) {
             ExerciseDialog(

@@ -97,14 +97,14 @@ abstract class GoGymRoomDatabase : RoomDatabase() {
                 exercisesIDs = exercises,
                 totalDuration = regularPushUps.duration
                     .plus(regularPushUps.duration)
-                    .plus(squats.duration).plus(squats.duration)
+                    .plus(squats.duration).plus(regularPushUps.duration)
             )
 
             val workout1 = Workout(
                 name = "Squats",
                 imagePath = pathToSquatImage,
-                exercisesIDs = listOf(ex2ID, ex2ID),
-                totalDuration = regularPushUps.duration.plus(squats.duration).plus(squats.duration)
+                exercisesIDs = listOf(ex2ID, ex2ID, ex2ID),
+                totalDuration = squats.duration.plus(squats.duration).plus(squats.duration)
             )
 
             val workoutID = workoutDao.insertSingleWorkout(workout)

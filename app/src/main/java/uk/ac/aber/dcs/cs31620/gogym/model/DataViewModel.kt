@@ -35,13 +35,18 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
 
     /**
      * inner lambda takes care of the durations mismatch
+     * and prevents the deletion of an only exercise in a workout
      */
-    fun deleteExercise(exercise: Exercise) {
+    fun deleteExercise(exercise: Exercise): Boolean {
 
         val allWorkouts = workouts.value
         val exerciseID = exercise.id
 
         allWorkouts?.let { workoutsList ->
+            for (workout in workoutsList) {
+                if (workout.exercisesIDs.none { it != exerciseID })
+                    return false
+            }
             for (workout in workoutsList) {
                 if (workout.exercisesIDs.contains(exerciseID)) {
                     workout.exercisesIDs.forEach {
@@ -55,6 +60,7 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
         repository.deleteExercise(exercise)
+        return true
     }
 
     fun insertExercise(exercise: Exercise) = repository.insertExercise(exercise)
