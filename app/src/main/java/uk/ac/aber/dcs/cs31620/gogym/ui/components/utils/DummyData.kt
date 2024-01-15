@@ -6,6 +6,10 @@ import uk.ac.aber.dcs.cs31620.gogym.model.exercise.Exercise
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
 import java.time.Duration
 
+/**
+ * Dummy data used for previews and debugging
+ */
+
 val dummyExercise = Exercise(
     name = "Regular Push Ups",
     numOfSets = 2,

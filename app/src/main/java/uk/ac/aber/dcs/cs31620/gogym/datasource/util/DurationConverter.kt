@@ -3,6 +3,9 @@ package uk.ac.aber.dcs.cs31620.gogym.datasource.util
 import androidx.room.TypeConverter
 import java.time.Duration
 
+/**
+ * Duration Converter
+ */
 object DurationConverter {
     @TypeConverter
     @JvmStatic

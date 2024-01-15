@@ -5,6 +5,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.Duration
 
+/**
+ * Exercise Entity
+ * @property getFormattedDuration returns the duration formatted in HHh MMmin SSs format
+ */
 @Entity(tableName = "exercises")
 data class Exercise(
     @PrimaryKey(autoGenerate = true)

@@ -60,6 +60,22 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.components.utils.dummyWorkout
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 import java.util.Locale
 
+/**
+ * Expandable Card Composable featuring two custom buttons and the details section.
+ * @param imagePath String path to an image displayed on top start.
+ * @param topText Title-like Text-String.
+ * @param topButtonText Top button Text.
+ * @param topButtonImageVector Top Button Icon.
+ * @param bottomText Description text below the top text.
+ * @param bottomButtonText Bottom button Text.
+ * @param bottomButtonImageVector Bottom Button Icon.
+ * @param extraText extra text starting where bottom text ends.
+ * @param onClickTopButton lambda for top button on click action.
+ * @param onClickBottomButton lambda for bottom button on click action.
+ * @param detailsList List of Strings that will be displayed in between the
+ * main section and custom buttons. Text will be organized into two columns.
+ * One text goes for a column.
+ */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
 @Composable
 fun ExpandableCard(

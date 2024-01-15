@@ -8,6 +8,9 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 
+/**
+ * Day Data Access object
+ */
 @Dao
 interface DayDao {
 

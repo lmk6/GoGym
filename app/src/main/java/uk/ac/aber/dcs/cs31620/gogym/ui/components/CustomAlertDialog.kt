@@ -7,7 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import uk.ac.aber.dcs.cs31620.gogym.R
 
-
+/**
+ * Custom Alert Dialog
+ * @param titleText Title of the Dialog.
+ * @param descriptionText Description text.
+ * @param onDismiss on dismiss lambda.
+ * @param onConfirm on confirm lambda.
+ */
 @Composable
 fun CustomAlertDialog(
     titleText: String,

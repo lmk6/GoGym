@@ -11,7 +11,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.gogym.datasource.util.DurationConverter
 import uk.ac.aber.dcs.cs31620.gogym.datasource.util.ExercisesIDsListConverter
-import uk.ac.aber.dcs.cs31620.gogym.datasource.util.StatusConverter
 import uk.ac.aber.dcs.cs31620.gogym.model.day.Day
 import uk.ac.aber.dcs.cs31620.gogym.model.day.DayDao
 import uk.ac.aber.dcs.cs31620.gogym.model.day.DayOfWeek
@@ -23,9 +22,13 @@ import uk.ac.aber.dcs.cs31620.gogym.pathToPushUpsImage
 import uk.ac.aber.dcs.cs31620.gogym.pathToSquatImage
 import java.time.Duration
 
+/**
+ *  GoGym Room Database.
+ *  Features 3 tables - days, workouts, exercises.
+ */
 @Database(entities = [Day::class, Workout::class, Exercise::class], version = 1)
 @TypeConverters(
-    StatusConverter::class, ExercisesIDsListConverter::class, DurationConverter::class
+    ExercisesIDsListConverter::class, DurationConverter::class
 )
 abstract class GoGymRoomDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao
@@ -74,8 +77,8 @@ abstract class GoGymRoomDatabase : RoomDatabase() {
 
             val squats = Exercise(
                 name = "Squats",
-                numOfSets = 1,
-                duration = Duration.ofMinutes(1).plusSeconds(30),
+                numOfSets = 3,
+                duration = Duration.ofMinutes(4).plusSeconds(30),
                 repsPerSet = 8,
                 imagePath = pathToSquatImage
             )
@@ -84,7 +87,7 @@ abstract class GoGymRoomDatabase : RoomDatabase() {
             val ex1ID = exerciseDao.insertSingleExercise(regularPushUps)
             val ex2ID = exerciseDao.insertSingleExercise(squats)
 
-            val exercises = listOf(ex1ID, ex2ID, ex1ID, ex2ID, ex1ID)
+            val exercises = listOf(ex1ID, ex1ID, ex2ID, ex1ID)
 
             val workoutDao = instance.workoutDao()
 
@@ -94,15 +97,14 @@ abstract class GoGymRoomDatabase : RoomDatabase() {
                 exercisesIDs = exercises,
                 totalDuration = regularPushUps.duration
                     .plus(regularPushUps.duration)
-                    .plus(regularPushUps.duration)
                     .plus(squats.duration).plus(squats.duration)
             )
 
             val workout1 = Workout(
-                name = "PushUps",
+                name = "Squats",
                 imagePath = pathToSquatImage,
-                exercisesIDs = listOf(ex1ID, ex2ID),
-                totalDuration = regularPushUps.duration.plus(squats.duration)
+                exercisesIDs = listOf(ex2ID, ex2ID),
+                totalDuration = regularPushUps.duration.plus(squats.duration).plus(squats.duration)
             )
 
             val workoutID = workoutDao.insertSingleWorkout(workout)

@@ -9,6 +9,9 @@ import androidx.room.Query
 import androidx.room.Update
 import uk.ac.aber.dcs.cs31620.gogym.model.day.DayOfWeek
 
+/**
+ * Workout Data Access object
+ */
 @Dao
 interface WorkoutDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

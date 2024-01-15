@@ -7,6 +7,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
+/**
+ * @param data Snack Bar specific data
+ * @param onDismiss on dismiss lambda
+ */
 @Composable
 fun SnackBar(
     data: SnackbarData,

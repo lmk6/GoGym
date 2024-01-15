@@ -10,6 +10,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 
+/**
+ * Composable used to get a Text section in a constrained layour
+ * @param textColour colour of the text.
+ * @param topText Title-like text.
+ * @param bottomText Text below the topText.
+ * @param extraText Optional, start where bottom text ends, below the top text.
+ */
 @Composable
 fun DetailsSection(
     modifier: Modifier,

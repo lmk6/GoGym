@@ -5,6 +5,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.Duration
 
+/**
+ * Workout Entity
+ * @property getFormattedDuration returns the duration formatted in HHh MMmin SSs format
+ * @param exercisesIDs Keeps the exercises' IDs to keep the order and occurrences.
+ */
 @Entity(tableName = "workouts")
 data class Workout(
     @PrimaryKey(autoGenerate = true)

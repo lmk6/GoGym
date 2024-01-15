@@ -33,11 +33,14 @@ import com.bumptech.glide.integration.compose.GlideImage
 import uk.ac.aber.dcs.cs31620.gogym.R
 import uk.ac.aber.dcs.cs31620.gogym.defaultRoundedCornerShape
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
-import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutStatus
 import uk.ac.aber.dcs.cs31620.gogym.pathToRestDayImage
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 
-
+/**
+ * Big Home Screen card showing a session scheduled for today.
+ * @param workout - workout scheduled for today.
+ * @param clickAction lambda to parse the workouts ID on click.
+ */
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun TodayWorkoutCard(
@@ -102,7 +105,7 @@ fun TodayWorkoutCard(
 }
 
 @Composable
-fun MainTextConstrained(
+private fun MainTextConstrained(
     modifier: Modifier,
     workout: Workout?
 ) {
@@ -139,7 +142,7 @@ fun MainTextConstrained(
 }
 
 @Composable
-fun TextBox(
+private fun TextBox(
     modifier: Modifier,
     startString: String,
     followupString: String

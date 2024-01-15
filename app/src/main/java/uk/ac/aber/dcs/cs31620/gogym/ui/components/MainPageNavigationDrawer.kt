@@ -40,7 +40,7 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
  * @param closeDrawer To pass in the close navigation drawer behaviour as a lambda.
  * By default has an empty lambda.
  * @param content To pass in the page content for the page when the navigation drawer is closed
- * @author Chris Loftus
+ * @author mainly Chris Loftus, I edited it to fit my project.
  */
 @Composable
 fun MainPageNavigationDrawer(
@@ -49,14 +49,6 @@ fun MainPageNavigationDrawer(
     closeDrawer: () -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
-
-    // We are currently unable to use Material 3 ModalNavigationDrawer
-    // with Material 3 Scaffold! The latter does not have a drawerContent
-    // parameter forcing us to use Material 2 Scaffold.
-    // Also, ModalNavigationDrawer does not play well
-    // with Material 2 Scaffold (different DrawerState classes). We are however, able to use the
-    // Material 3 NavigationDrawerItem, making it easier to
-    // specify nav drawer clickable icons
     val items = listOf(
         Pair(
             Icons.Default.Home,

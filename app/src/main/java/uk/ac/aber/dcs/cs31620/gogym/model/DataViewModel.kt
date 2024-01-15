@@ -8,7 +8,6 @@ import uk.ac.aber.dcs.cs31620.gogym.model.day.Day
 import uk.ac.aber.dcs.cs31620.gogym.model.day.DayOfWeek
 import uk.ac.aber.dcs.cs31620.gogym.model.exercise.Exercise
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
-import uk.ac.aber.dcs.cs31620.gogym.model.workout.WorkoutStatus
 import java.time.LocalDate
 
 /**

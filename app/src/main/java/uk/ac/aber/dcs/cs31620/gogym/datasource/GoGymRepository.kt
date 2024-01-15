@@ -6,6 +6,10 @@ import uk.ac.aber.dcs.cs31620.gogym.model.day.DayOfWeek
 import uk.ac.aber.dcs.cs31620.gogym.model.exercise.Exercise
 import uk.ac.aber.dcs.cs31620.gogym.model.workout.Workout
 
+/**
+ * GoGym Repository.
+ * All the function connecting the project with the database.
+ */
 class GoGymRepository(application: Application) {
     private val exerciseDao = GoGymRoomDatabase.getDatabase(application)!!.exerciseDao()
     private val workoutDao = GoGymRoomDatabase.getDatabase(application)!!.workoutDao()
@@ -15,13 +19,7 @@ class GoGymRepository(application: Application) {
         exerciseDao.insertSingleExercise(exercise)
     }
 
-    fun insertMultipleExercises(exercises: List<Exercise>) {
-        exerciseDao.insertMultipleExercises(exercises)
-    }
-
     fun getAllExercises() = exerciseDao.getAllExercises()
-
-    fun getExercise(exerciseID: Long) = exerciseDao.getExerciseByID(exerciseID)
 
     fun getExerciseNonLive(exerciseID: Long) = exerciseDao.getNonLiveExerciseByID(exerciseID)
 
@@ -34,8 +32,6 @@ class GoGymRepository(application: Application) {
     fun getAllDaysNonLive() = dayDao.getNonLiveAllDays()
 
     fun getDayByIDNonLive(dayID: Long) = dayDao.getNonLiveDayByID(dayID)
-
-    fun getDayByDayOfWeekNonLive(day: DayOfWeek) = dayDao.getNonLiveDayByDayOfWeek(day)
 
     fun getWorkoutByDayOfWeek(day: DayOfWeek) = workoutDao.getWorkoutForDay(day)
 

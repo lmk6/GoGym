@@ -18,7 +18,8 @@ import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
  * Has a menu button icon and the app name.
  * @param onClick: provides the behaviour for the menu icon or
  * an empty lambda if not provided.
- * @author Chris Loftus
+ * @author overwhelmingly Chris Loftus, I only added the:
+ * @param actions Composable lambda holding a clickable icon
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

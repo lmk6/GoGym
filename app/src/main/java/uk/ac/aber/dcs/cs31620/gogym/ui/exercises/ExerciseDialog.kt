@@ -59,8 +59,8 @@ import java.time.Duration
  * Supports both, creation and edition of an existing exercise.
  * One dialog to fit all the details.
  * @param exercise if not null, enables edition, otherwise creation.
- * @param onConfirm on dismiss function.
- * @param onDismiss provides a new or an edited exercise on confirmation.
+ * @param onDismiss on dismiss function.
+ * @param onConfirm provides a new or an edited exercise on confirmation.
  */
 
 @Suppress("Since15")

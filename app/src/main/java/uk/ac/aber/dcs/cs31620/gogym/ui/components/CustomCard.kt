@@ -24,6 +24,14 @@ import uk.ac.aber.dcs.cs31620.gogym.defaultRoundedCornerShape
 import uk.ac.aber.dcs.cs31620.gogym.pathToPushUpsImage
 import uk.ac.aber.dcs.cs31620.gogym.ui.theme.GoGymTheme
 
+/**
+ * Card Composable featuring an image and a details section.
+ * @param imagePath String path to an image displayed on top of the card.
+ * @param topText Title-like Text-String.
+ * @param bottomText Description text below the top text.
+ * @param extraText Extra text starting where bottom text ends.
+ * @param clickAction Lambda executed on-click
+ */
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CustomCard(
