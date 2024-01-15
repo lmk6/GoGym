@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -33,6 +34,8 @@ fun DetailsSection(
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             color = textColour,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .constrainAs(topTextRef) {
                     start.linkTo(parent.start)
@@ -46,6 +49,8 @@ fun DetailsSection(
             fontSize = 18.sp,
             fontWeight = FontWeight.ExtraLight,
             color = textColour,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .constrainAs(bottomTextRef) {
                     start.linkTo(parent.start)
@@ -61,6 +66,8 @@ fun DetailsSection(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.ExtraLight,
                 color = textColour,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .constrainAs(extraTextRef) {
                         start.linkTo(bottomTextRef.end)

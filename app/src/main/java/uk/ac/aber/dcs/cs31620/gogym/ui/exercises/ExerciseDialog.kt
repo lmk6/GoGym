@@ -128,7 +128,7 @@ fun ExerciseDialog(
 
                 var hoursText by remember {
                     mutableStateOf(
-                        "%02d".format(duration.toHours())
+                        "%1d".format(duration.toHours())
                     )
                 }
                 var minutesText by remember {
@@ -226,6 +226,7 @@ fun ExerciseDialog(
                     TimeOutlinedTextField(
                         timeUnitValueText = hoursText,
                         timeUnitText = stringResource(R.string.hours),
+                        maxValue = 1,
                         onValueChange = {
                             hoursText = it
                         }
@@ -493,6 +494,7 @@ private fun SelectImageBox(
 private fun TimeOutlinedTextField(
     timeUnitValueText: String,
     timeUnitText: String,
+    maxValue: Int = 59,
     onValueChange: (String) -> Unit
 ) {
     var timeUnitString = timeUnitValueText
@@ -501,7 +503,7 @@ private fun TimeOutlinedTextField(
         onValueChange = {
             if (it.length < 3 && it.isNotBlank()) {
                 timeUnitString = when (it.toIntOrNull()) {
-                    in 0..59 -> it
+                    in 0..maxValue -> it
                     else -> timeUnitString
                 }
                 onValueChange(timeUnitString)

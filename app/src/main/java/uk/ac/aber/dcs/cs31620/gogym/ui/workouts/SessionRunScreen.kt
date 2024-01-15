@@ -237,6 +237,7 @@ private fun SessionRunScreen(
                         if (currentExerciseIndex < exercises.size - 1
                         ) {
                             currentSet = 1
+                            currentMiniSet = 1
                             currentExercise = exercises[++currentExerciseIndex]
                             buttonStringResource = R.string.next
                         } else {
